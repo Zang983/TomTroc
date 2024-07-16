@@ -18,6 +18,8 @@
                 echo '<a href="index.php?action=disconnectUser">Déconnexion</a>';
             }
             ?>
+
+            <a href="index.php?action=editBook">Ajouter un livre.</a>
         </nav>
         <h1>TomTroc</h1>
     </header>

@@ -19,8 +19,15 @@ try {
             $bookController = new bookController();
             $bookController->showHome();
             break;
-        
-    
+        case 'editBook':
+            $bookController = new bookController();
+            $bookController->editBook();
+            break;
+        case 'createBook':
+            $bookController = new bookController();
+            $bookController->createBook();
+            break;
+
         default:
             throw new Exception("La page demandée n'existe pas.");
     }

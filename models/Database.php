@@ -3,7 +3,8 @@
 Simple creation of the database connection; studying the singleton pattern is relevant.
 */
 
-class Database {
+class Database
+{
     private static $instance = null;
     private $pdo;
 
@@ -24,17 +25,30 @@ class Database {
         return self::$instance;
     }
 
+    public function getPdo()
+    {
+        return $this->pdo;
+    }
+
     /*
     Execute the provided query and return the result if there is one.
     */
     public function executeRequest(string $request, array $params = null)
     {
-        $state = $this->pdo->prepare($request);
-        $state->execute($params);
+        if ($params == null) {
+            $state = $this->db->query($request);
+        } else {
+            $state = $this->db->prepare($request);
+            $state->execute($params);
+        }
         return $state->fetchAll();
     }
     public function lastId()
     {
         return $this->pdo->lastInsertId();
+    }
+    public function showError()
+    {
+        return $this->pdo->errorInfo();
     }
 }
