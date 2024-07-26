@@ -1,0 +1,29 @@
+<section class="detail_book">
+    <a href="index.php?action=market" class="font-light">Nos livres > <?= $book ? $book->getTitle() : null ?></a>
+    <figure>
+        <img src=<?= $book ? Utils::filepath($book->getFilename()):null ?> alt="livre">
+        <figcaption>
+            <h1 class="playfair-font"><?= $book ? $book->getTitle() : null ?></h1>
+            <h2>par <?= $book ? $book->getAuthor() : null ?></h2>
+            <hr>
+            <h3 class="font-semibold">Description</h3>
+            <blockquote>
+                <?= $book ? $book->getDescription() : null ?>
+            </blockquote>
+
+            <div class="owner">
+
+                <h4 class="font-semibold">Propriétaire</h4>
+                <div>
+                    <a href="index.php?action=profile&id=<?= $user ? $user->getId() : null ?>" class="owner_card">
+                        <img src=<?= $book ? Utils::filepath($user->getAvatar(),true):null ?> alt="avatar" width="48" height="48">
+                        <p><?= $user ? $user->getUsername() : null ?></p>
+                    </a>
+                </div>
+
+            </div>
+            <a href="index.php?action=sendMessage&idReceiver=<?= $user ? $user->getId() : null ?>"
+                class="primary_button primary_button--full_width font-semibold">Envoyer un message</a>
+        </figcaption>
+    </figure>
+</section>

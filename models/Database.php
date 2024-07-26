@@ -36,9 +36,9 @@ class Database
     public function executeRequest(string $request, array $params = null)
     {
         if ($params == null) {
-            $state = $this->db->query($request);
+            $state = $this->pdo->query($request);
         } else {
-            $state = $this->db->prepare($request);
+            $state = $this->pdo->prepare($request);
             $state->execute($params);
         }
         return $state->fetchAll();

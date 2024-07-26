@@ -3,11 +3,8 @@
 
 class Book
 {
-
-
-    public function __construct(private string $title, private string $description, private string $url, private int $id = -1)
+    public function __construct(private string $title, private string $description, private string $author, private int $availability = 1, private string|null $filename, private int $ownerId = -1, private int $id = -1)
     {
-        
     }
 
     public function getTitle(): string
@@ -30,14 +27,48 @@ class Book
         $this->description = $description;
     }
 
-    public function getUrl(): string
+    public function getAuthor(): string
     {
-        return $this->url;
+        return $this->author;
     }
 
-    public function setUrl(string $url): void
+    public function setAuthor(string $author): void
     {
-        $this->url = $url;
+        $this->author = $author;
+    }
+
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(?string $filename): void
+    {
+        $this->filename = $filename;
+    }
+
+    public function getAvailability(): bool
+    {
+        return $this->availability;
+    }
+
+    public function setAvailability(bool $availability): void
+    {
+        $this->availability = $availability;
+    }
+
+    public function setOwnerName(string $name): void
+    {
+        $this->ownerUsername = $name;
+    }
+    public function getOwnerId(): int
+    {
+        return $this->ownerId;
+    }
+
+    public function setOwnerId(int $ownerId): void
+    {
+        $this->ownerId = $ownerId;
     }
 
     public function getId(): int
@@ -49,6 +80,5 @@ class Book
     {
         $this->id = $id;
     }
-
 
 }

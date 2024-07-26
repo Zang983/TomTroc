@@ -4,31 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TomTroc</title>
+    <title><?= $title?></title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
     <header>
         <nav>
-            <?php
-            // Si on est connecté, on affiche le bouton de déconnexion, sinon, on affiche le bouton de connexion : 
-            if (isset($_SESSION['user'])) {
-                echo '<a href="index.php?action=disconnectUser">Déconnexion</a>';
-            }
-            ?>
-
-            <a href="index.php?action=editBook">Ajouter un livre.</a>
+            <img src="./assets/logo.svg" alt="Logo TomTroc">
+            <div>
+                <a href="index.php?action=home">Accueil</a>
+                <a href="index.php?action=market" class="font-bold">Nos livres à l'échange</a>
+            </div>
+            <div class="headerMenu">
+                <?php
+                if (isset($_SESSION['user'])) {
+                    ?>
+                    <div>
+                        <a href="index.php?action=mailbox">Messagerie</a>
+                        <a href="index.php?action=myProfile">Mon compte</a>
+                        <a href="index.php?action=logout">Déconnexion</a>
+                    </div>
+                    <?php
+                } else {
+                    ?>
+                    <div>
+                        <a href="index.php?action=connexion">Connexion</a>
+                        <a href="index.php?action=inscription">Inscription</a>
+                    </div>
+                    <?php
+                }
+                ?>
+            </div>
         </nav>
-        <h1>TomTroc</h1>
     </header>
     <main>
         <?= $content /* Ici est affiché le contenu réel de la page. */ ?>
     </main>
 
-    <footer>
-        <p>TomTroc - 2021</p>
+    <footer class="font-light">
+        <a href="#">Politique de confidentialité</a>
+        <a href="#">Mentions légales</a>
+        <a href="#">Tom Troc&copy;</a>
+        <img src="./assets/tt.svg" alt="">
     </footer>
 
 </body>
