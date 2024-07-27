@@ -7,12 +7,11 @@ class Utils
 
     public static function uploadFile(array $file, bool $isAvatar = false): string|null
     {
-        var_dump($file);
         $file = $file['file'];
         $target_dir = $isAvatar ? UPLOAD_AVATAR_DIR : UPLOAD_BOOK_DIR;
 
         if (!$file['error']) {
-            $filename = time() . "_" . basename($file['name']);
+            $filename = time() . "_" . htmlspecialchars(basename($file['name']));
             $target_file = $target_dir . $filename;
             move_uploaded_file($file['tmp_name'], $target_file);
             return $filename;
@@ -65,7 +64,6 @@ class Utils
             return $years . " années";
         }
     }
-
     /**
      * @param string|null $filename : filename of avatar or book cover
      * @param bool $isAvatar : if it's an avatar
@@ -82,5 +80,49 @@ class Utils
             return $filename == "no-image.svg" ? NO_IMAGE : "./uploads/books/" . $filename;
         }
     }
+    public static function checkInput(array $input): bool
+    {
+        switch ($input['type']) {
+            case 'email':
+                if (!filter_var($input['value'], FILTER_VALIDATE_EMAIL)) {
+                    return false;
+                }
+                break;
+            case 'password':
+                if (strlen($input['value']) < 3) {
+                    return false;
+                }
+                break;
+            case 'username':
+                if (strlen($input['value']) < 3) {
+                    return false;
+                }
+                break;
+            case 'text':
+                if (strlen($input['value']) < 3) {
+                    return false;
+                }
+                break;
+        }
+        return true;
+    }
+    /**
+     * This method check if the form is valid.
+     * @param array $inputs : form, with values and types of each inputs (email | password | username | text).
+     * @return bool : true if the input is valid, false otherwise
+     */
+    public static function checkValidityForm(array $inputs): bool
+    {
+        foreach ($inputs as $entry) {
+            if (!self::checkInput($entry))
+                return false;
+        }
+        return true;
+    }
+    public static function secureInput(string $input): string
+    {
+        return htmlspecialchars(trim($input));
+    }
+
 }
 

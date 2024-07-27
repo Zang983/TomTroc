@@ -8,7 +8,47 @@ class BookManager
     {
         $this->db = Database::getDB();
     }
+    
+    /* Method which udpdate db*/
+    public function addBook(Book $book, User $user): void
+    {
+        $this->db->executeRequest(
+            'INSERT INTO books (title, description, author, imageFilename,availability,OwnerId) VALUES (?,?,?,?,?,?)',
+            [
+                Utils::secureInput($book->getTitle()),
+                Utils::secureInput($book->getDescription()),
+                Utils::secureInput($book->getAuthor()),
+                $book->getFilename() === 'no-image.svg' ? null : $book->getFilename(),
+                intval($book->getAvailability(), 10),
+                $book->getOwnerId()
+            ]
+        );
+    }
+    public function deleteBookById(int $idBook, int $idUser): array
+    {
 
+        return $this->db->executeRequest('DELETE FROM books WHERE idBook = ? AND ownerId = ?', [$idBook, $idUser]);
+    }
+    public function updateBook(Book $book): void
+    {
+        var_dump($book);
+        $this->db->executeRequest(
+            'UPDATE books SET title = ?, description = ?, author = ?, availability = ?, imageFilename = ?, updatedAt = ? WHERE idBook = ?',
+            [
+                $book->getTitle(),
+                $book->getDescription(),
+                $book->getAuthor(),
+                $book->getAvailability() === null ? null : intval($book->getAvailability(), 10),
+                $book->getFilename() === 'no-image.svg' ? null : $book->getFilename(),
+                date('Y-m-d H:i:s',time()),
+                $book->getId()
+            ]
+        );
+
+    }
+
+
+    /* Method which read db*/
     function getLastBooks(int $limit = 4): array
     {
         $rawDatas = $this->db->executeRequest('SELECT * FROM books INNER JOIN users ON  books.OwnerId = users.idUser ORDER BY books.createdAt DESC LIMIT ' . $limit);
@@ -43,20 +83,6 @@ class BookManager
         $rawDatas = $this->db->executeRequest('SELECT * FROM books WHERE idBook = ?', [$id]);
         return new Book($rawDatas[0]['title'], $rawDatas[0]['description'], $rawDatas[0]['author'], $rawDatas[0]['availability'], $rawDatas[0]['imageFilename'], $rawDatas[0]['ownerId'], $rawDatas[0]['idBook']);
     }
-    public function addBook(Book $book, User $user): void
-    {
-        $this->db->executeRequest(
-            'INSERT INTO books (title, description, author, imageFilename,availability,OwnerId) VALUES (?,?,?,?,?,?)',
-            [
-                $book->getTitle(),
-                $book->getDescription(),
-                $book->getAuthor(),
-                $book->getFilename() === 'no-image.svg' ? null : $book->getFilename(),
-                intval($book->getAvailability(), 10),
-                $book->getOwnerId()
-            ]
-        );
-    }
     public function getBooksByUser(int $userId): array
     {
         $rawBooks = $this->db->executeRequest('SELECT * FROM books WHERE OwnerId = ' . $userId);
@@ -65,27 +91,12 @@ class BookManager
         }, $rawBooks);
         return $books;
     }
-    public function deleteBookById(int $idBook, int $idUser): array
-    {
-
-        return $this->db->executeRequest('DELETE FROM books WHERE idBook = ? AND ownerId = ?', [$idBook, $idUser]);
-    }
-    public function updateBook(Book $book): void
-    {
-        var_dump($book);
-        $this->db->executeRequest(
-            'UPDATE books SET title = ?, description = ?, author = ?, availability = ?, imageFilename = ?, updatedAt = ? WHERE idBook = ?',
-            [
-                $book->getTitle(),
-                $book->getDescription(),
-                $book->getAuthor(),
-                $book->getAvailability() === null ? null : intval($book->getAvailability(), 10),
-                $book->getFilename() === 'no-image.svg' ? null : $book->getFilename(),
-                date('Y-m-d H:i:s',time()),
-                $book->getId()
-            ]
-        );
-
+    public function searchBook(string $search): array{
+        $rawDatas = $this->db->executeRequest('SELECT * FROM books WHERE title LIKE ?', ['%'.$search.'%']);
+        $datas = array_map(function ($datas) {
+            return new Book($datas['title'], $datas['description'], $datas['author'], $datas['availability'], $datas['imageFilename'], $datas['ownerId'], $datas['idBook']);
+        }, $rawDatas);
+        return $datas;
     }
 
 

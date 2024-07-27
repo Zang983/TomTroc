@@ -37,12 +37,11 @@ class BookController
     {
         $bookManager = new BookManager();
         $datas = $bookManager->getBookById($_GET['idBook'], true);
-        $book = $datas['book']; 
-        $user = $datas['user']; 
+        $book = $datas['book'];
+        $user = $datas['user'];
         $view = new View("Détail du livre");
         $view->render("detailBook", ["book" => $book, "user" => $user]);
     }
-
     /* form processing methods */
     public function updateBook(): void
     {
@@ -50,20 +49,21 @@ class BookController
             throw new Exception("Vous devez spécifier un livre à modifier");
         }
         $bookManager = new BookManager();
-        $newData = false;
         $actualDatas = $bookManager->getBookById($_GET['id']);
         $newTitle = $_POST['title'];
         $newDescription = $_POST['description'];
         $newAuthor = $_POST['author'];
         $newAvailability = intval($_POST['availability'], 10);
 
-        if (empty($newTitle) || empty($newDescription) || empty($newAuthor) || $newAvailability === null) {
-            throw new Exception("Tous les champs ne sont pas remplis");
+        if (
+            Utils::checkValidityForm([['value' => $newTitle, 'type' => "text"], ['value' => $newDescription, 'type' => 'text'], ['value' => $newAuthor, 'type' => 'text']])
+            || $newAvailability === null
+        ) {
+            /* No detail about form mistakes, it will be improve in a next version.*/
+            throw new Exception("Le formulaire n'est pas valide.");
         }
+        /* We check if datas are the same, or if we need to update database. */
         if ($newTitle !== $actualDatas->getTitle() || $newDescription !== $actualDatas->getDescription() || $newAuthor !== $actualDatas->getAuthor() || $newAvailability !== $actualDatas->getAvailability()) {
-            $newData = true;
-        }
-        if ($newData) {
             $filename = $actualDatas->getFilename();
             if (!empty($_FILES['file']['name'])) {
                 Utils::deleteFile($filename);
@@ -82,9 +82,12 @@ class BookController
         $description = $_POST['description'] ?? null;
         $author = $_POST['author'] ?? null;
         $availability = intval($_POST['availability'], 10) ?? null;
-
-        if (!$title || !$description || !$author || $availability === null) {
-            throw new Exception("Tous les champs ne sont pas remplis");
+        if (
+            Utils::checkValidityForm([['value' => $title, 'type' => "text"], ['value' => $description, 'type' => 'text'], ['value' => $author, 'type' => 'text']])
+            || $availability === null
+        ) {
+            /* No detail about form mistakes, it will be improve in a next version.*/
+            throw new Exception("Le formulaire n'est pas valide.");
         }
         if ($_FILES) {
             $filename = Utils::uploadFile($_FILES);

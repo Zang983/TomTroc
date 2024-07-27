@@ -42,13 +42,14 @@ class UserController
     /* form processing methods */
     public function createUser(): void
     {
-        if (empty($_POST['username']) || empty($_POST['email']) || empty($_POST['password'])) {
+        if (!Utils::checkValidityForm([
+            ['value' => $_POST['username'],'type' => "text"],
+            ['value' => $_POST['email'], 'type' => 'text'],
+            ['value' => $_POST['password'], 'type' => 'text']]) || $_POST['newAvailability'] === null)
             throw new Exception("Tous les champs ne sont pas remplis");
-        }
+
         $userManager = new UserManager();
-        // $user = new User($_POST['username'], $_POST['email'], password_hash($_POST['password'], PASSWORD_DEFAULT),null,date('Y-m-d H:i:s',time()));
-        $user = $userManager->createUser($_POST['username'], $_POST['email'], password_hash($_POST['password'], PASSWORD_DEFAULT));
-        $_SESSION['user'] = $user;
+        $_SESSION['user'] = $userManager->createUser($_POST['username'], $_POST['email'], password_hash($_POST['password'], PASSWORD_DEFAULT));
         Utils::redirect("home");
     }
     public function updateUser(): void
