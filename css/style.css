@@ -65,6 +65,7 @@ Components & utils
     border-radius: 10px;
     display:block;
     width:fit-content;
+    border:none;
 }
 .primary_button--reversed{
     background-color:inherit;
@@ -541,4 +542,44 @@ border-radius: 20px;
     outline:none;
     padding-right:24px;
     padding-left:14px;
+}
+
+/* Connexion & inscription */
+.connexion{
+    flex:1;
+    flex-direction: row;
+    background-color: var(--secondary-bg-color);
+}
+.connexion div{
+    display:flex;
+}
+.connexion form{
+    padding-left:150px;
+    padding-top:130px;
+    padding-right:248px;
+    display:flex;
+    flex-direction: column;
+    margin: 0 auto;
+    justify-content: flex-start;
+    gap:32px;
+}
+.connexion label{
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+    color:var(--primary-gray);
+}
+.connexion input {
+    height:50px;
+    width:322px;
+    padding-left:10px;
+    border-radius : 6px;
+    border:1px solid #F0F0F0;
+}
+.connexion .primary_button{
+    font-size:16px;
+}
+.connexion img{
+    object-fit: cover;
+    width:50%;
 }
