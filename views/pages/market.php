@@ -1,7 +1,11 @@
 <section class="market">
     <div>
         <h1 class="playfair-font">Nos livres à l'échange</h1>
-        <input type="search" placeholder="Rechercher un livre" class="search_bar">
+        <form action="index.php?action=market" method="POST">
+            <input type="search" name="search" placeholder="Rechercher un livre" class="search_bar">
+            <button type="submit" class="hidden"></button>
+        </form>
+
     </div>
     <div class="cards-container">
         <?php

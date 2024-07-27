@@ -29,8 +29,9 @@ class BookController
     public function showMarket(): void
     {
         $bookManager = new BookManager();
-        $datas = $bookManager->getAllBooks();
-        $view = new View("Livres à l'échange");
+        $datas = isset($_POST['search']) ? $bookManager->searchBooks($_POST['search']) : $bookManager->getAllBooks();
+        $title = isset($_POST['search']) ? "Résultats de la recherche" : "Livres à l'échange";
+        $view = new View($title);
         $view->render("market", ["datas" => $datas]);
     }
     public function detailBook(): void
