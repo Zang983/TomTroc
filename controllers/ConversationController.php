@@ -2,19 +2,36 @@
 
 class ConversationController
 {
-    public function showChatBox()
+    public function showMailBox()
     {
+        if (isset($_GET['idReceiver'])) {
+            $this->getAllMessages();
+            return;
+        }
         $conversationManager = new ConversationManager();
         $conversationsList = $conversationManager->getAllConversations($_SESSION['user']);
         $view = new View('Votre messagerie');
-        $view->render('chatBox', ['conversationsList' => $conversationsList]);
+        $view->render('mailBox', ['conversationsList' => $conversationsList]);
     }
     public function getAllMessages()
     {
-        $messageManager = new MessageManager();
-        $messages = $messageManager->getAllMessages();
+        $idReceiver = isset($_GET['idReceiver']) ? intval($_GET['idReceiver'], 10) : -1;
+        $conversationManager = new ConversationManager();
+        $conversationsList = $conversationManager->getAllConversations($_SESSION['user']);
+        $messages = [];
+
+        foreach ($conversationsList as $entry) {
+            if ($entry['conversation']->getIdUser2() === $idReceiver || $entry['conversation']->getIdUser1() === $idReceiver) {
+                $messageManager = new MessageManager();
+                $messages = $messageManager->getAllMessages($entry['conversation']->getId());
+                $isUser2 = $entry['conversation']->getIdUser2() === $_SESSION['user']->getId();
+                $isUser2 ? $entry['conversation']->setLastOpeningUser2(date('Y-m-d H:i:s')) : $entry['conversation']->setLastOpeningUser1(date('Y-m-d H:i:s'));
+                $conversationManager->updateConversation($entry['conversation']);
+                break;
+            }
+        }
         $view = new View('Votre messagerie');
-        $view->render('chatBox', ['messages' => $messages]);
+        $view->render('mailBox', ['conversationsList' => $conversationsList, 'messages' => $messages]);
     }
 
     public function sendMessage()

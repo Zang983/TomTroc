@@ -2,7 +2,7 @@
 
 class Message
 {
-    public function __construct(public string $content,public string $createdAt,public int $authorId,public int $idConversation = -1)
+    public function __construct(public string $content,public string $createdAt,public int $authorId,public int $idConversation = -1,public int $idMessage = -1)
     {
     }
     public function getContent(): string

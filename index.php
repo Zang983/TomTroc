@@ -85,7 +85,7 @@ try {
             break;
         case 'mailbox':
             $messageController = new ConversationController();
-            $messageController->showChatBox();
+            $messageController->showMailBox();
             break;
         case 'updateBook':
             $bookController = new BookController();
