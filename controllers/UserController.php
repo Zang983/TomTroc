@@ -45,7 +45,7 @@ class UserController
         if (!Utils::checkValidityForm([
             ['value' => $_POST['username'],'type' => "text"],
             ['value' => $_POST['email'], 'type' => 'text'],
-            ['value' => $_POST['password'], 'type' => 'text']]) || $_POST['newAvailability'] === null)
+            ['value' => $_POST['password'], 'type' => 'text']]))
             throw new Exception("Tous les champs ne sont pas remplis");
 
         $userManager = new UserManager();
@@ -91,7 +91,7 @@ class UserController
     {
         $userManager = new UserManager();
         $user = $userManager->getUserByEmail($_POST['email']);
-        if ($user !== -1 && password_verify($_POST['password'], $user->getPassword())) {
+        if ($user !== null && password_verify($_POST['password'], $user->getPassword())) {
             $_SESSION['user'] = $user;
             Utils::redirect("home");
         } else {

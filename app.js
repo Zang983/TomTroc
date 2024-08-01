@@ -1,24 +1,22 @@
+/* Page Market */
 const urlParams = new URLSearchParams(window.location.search);
 const action = urlParams.get('action');
 
 if (action === 'market') {
-    searchBar = document.querySelector('.search_bar');
-    console.log(searchBar)
+    const searchBar = document.querySelector('.search_bar');
     if (searchBar) {
-        allBooks = document.querySelectorAll('figure');
-        console.log(allBooks)
+        const allBooks = document.querySelectorAll('figure');
         searchBar.addEventListener('input', (e) => {
-            value = e.target.value.trim()
-            console.log(value)
+            let value = e.target.value.trim()
             if (value.length > 2) {
                 Array.from(allBooks).map((book) => {
-                    title = book.querySelector('figcaption h3').textContent.toLowerCase();
-                    if(!title.includes(value.toLowerCase())){
+                    let title = book.querySelector('figcaption h3').textContent.toLowerCase();
+                    if (!title.includes(value.toLowerCase())) {
                         book.classList.add('hidden')
                     }
                 })
             }
-            else{
+            else {
                 Array.from(allBooks).map((book) => {
                     book.classList.remove('hidden')
                 })
@@ -26,4 +24,47 @@ if (action === 'market') {
         })
 
     }
+}
+
+/* Page detail book */
+
+if (action === 'detailBook') {
+    const dialog = document.querySelector('dialog')
+    const btn = document.querySelector('button')
+    const closeBtn = document.querySelector('.close_button')
+    const form = dialog.querySelector('form')
+    const sendConfirmation = dialog.querySelector("#send_confirmation")
+
+
+    /* Gestion de la modale :*/
+    btn.addEventListener('click', () => {
+        dialog.showModal()
+    })
+    closeBtn.addEventListener('click', () => {
+
+        dialog.close()
+    })
+
+    /* Envoi requête AJAX*/
+    const submitBtn = document.querySelector('button[type="dialog"]')
+
+    submitBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+        const message = document.querySelector('#message').value
+        const idReceiver = submitBtn.getAttribute('data-idReceiver')
+        const ajaxRequest = new XMLHttpRequest()
+        ajaxRequest.open('POST', `index.php?action=sendMessage&idReceiver=${idReceiver}`, true)
+        ajaxRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+
+        ajaxRequest.onload = () => {
+            if (ajaxRequest.status === 200 && ajaxRequest.readyState === 4 && ajaxRequest.responseText === 'success') {
+                form.classList.add('success')
+            }
+            else {
+                form.classList.add('error')
+            }
+        }
+        ajaxRequest.send(`message=${message}`)
+    })
+
 }

@@ -472,6 +472,56 @@ margin-bottom: 80px;
     border-radius: 100%;
 }
 
+.detail_book dialog[open]{
+margin:auto;
+outline:none;
+border:none;
+border-radius:20px;
+border:1px solid black;
+padding:30px 20px;
+position:relative;
+width:30%;
+
+}
+.dialog_container{
+    display:flex;
+    flex-direction: column;
+}
+#modale_closer{
+    font-size:10px;
+    position:absolute;
+    top:15px;
+    right:15px;
+    border:1px solid blue;
+    background-color:inherit;
+    outline:none;
+    border-radius:100%;
+    width:15px;
+    height:15px;
+    cursor: pointer;
+}
+.dialog_container form{
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+}
+.dialog_container textarea{
+    padding:10px;
+}
+.dialog_container form.success::after{
+    content:'Message envoyé';
+    color:green;
+    font-size:12px;
+    margin-top:10px;
+}
+.dialog_container form.error::after{
+    content:'Problème lors de l\'envoi';
+    color:red;
+    font-size:12px;
+    margin-top:10px;
+}
+
+
 /*
 Page create_edit_book
 */
@@ -582,4 +632,54 @@ border-radius: 20px;
 .connexion img{
     object-fit: cover;
     width:50%;
+}
+
+/* Mailbox */
+#chatBox{
+    background-color: var(--primary-bg-color);
+    flex:1;
+    flex-direction:row;
+    padding:0 150px ;
+    display:flex; 
+}
+#chatList{
+    background-color: var(--secondary-bg-color);
+    padding: 55px 0;
+    width:27%.02;
+}
+#chatList h2{
+padding-left: 11%;
+padding-right:13.64%; 
+margin-bottom:27px;
+}
+#chatList img{
+    width:48px;
+    aspect-ratio:1/1;
+    object-fit: cover;
+    border-radius: 100%;
+}
+#chat{
+    flex:1;
+}
+.chatlist--item{
+    display:flex;
+    gap:12px;
+    max-height:84px;
+    padding:18px 11%;
+    padding-right:13.64%; 
+}
+.chatlist--item figcaption{
+    display:flex;
+    gap:7px;
+    flex-direction: column;
+    overflow: hidden;
+}
+.chatlist--item figcaption h4{
+    display:flex;
+    justify-content: space-between;
+}
+.chatlist--item figcaption p{
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

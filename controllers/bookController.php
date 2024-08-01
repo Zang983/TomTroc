@@ -57,7 +57,7 @@ class BookController
         $newAvailability = intval($_POST['availability'], 10);
 
         if (
-            Utils::checkValidityForm([['value' => $newTitle, 'type' => "text"], ['value' => $newDescription, 'type' => 'text'], ['value' => $newAuthor, 'type' => 'text']])
+            !Utils::checkValidityForm([['value' => $newTitle, 'type' => "text"], ['value' => $newDescription, 'type' => 'text'], ['value' => $newAuthor, 'type' => 'text']])
             || $newAvailability === null
         ) {
             /* No detail about form mistakes, it will be improve in a next version.*/
@@ -84,7 +84,7 @@ class BookController
         $author = $_POST['author'] ?? null;
         $availability = intval($_POST['availability'], 10) ?? null;
         if (
-            Utils::checkValidityForm([['value' => $title, 'type' => "text"], ['value' => $description, 'type' => 'text'], ['value' => $author, 'type' => 'text']])
+           !Utils::checkValidityForm([['value' => $title, 'type' => "text"], ['value' => $description, 'type' => 'text'], ['value' => $author, 'type' => 'text']])
             || $availability === null
         ) {
             /* No detail about form mistakes, it will be improve in a next version.*/

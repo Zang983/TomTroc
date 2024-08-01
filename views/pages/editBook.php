@@ -8,7 +8,7 @@ $link = $book ? 'index.php?action=editBook&id=' . $book->getId() : 'index.php?ac
     </div>
     <div class="container">
         <figure>
-            <img src=<?= $book ? Utils::filepath($book->getFilename()) : null ?> alt=<?= ($book && $book->getFilename()) ? "Couverture du livre" : "Pas d'illustration" ?>>
+            <img src=<?= Utils::filepath($book ? $book->getFilename() : null)?> alt=<?= ($book && $book->getFilename()) ? "Couverture du livre" : "Pas d'illustration" ?>>
             <figcaption>
                 <label for="image" class="underline">Modifier la photo</label>
             </figcaption>

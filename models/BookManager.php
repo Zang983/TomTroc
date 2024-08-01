@@ -31,7 +31,6 @@ class BookManager
     }
     public function updateBook(Book $book): void
     {
-        var_dump($book);
         $this->db->executeRequest(
             'UPDATE books SET title = ?, description = ?, author = ?, availability = ?, imageFilename = ?, updatedAt = ? WHERE idBook = ?',
             [

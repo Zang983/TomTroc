@@ -56,7 +56,7 @@ try {
             $userController->userProfile();
             break;
         case 'newBookForm':
-            $bookController = new bookController();
+            $bookController = new BookController();
             $bookController->newBookForm();
             break;
         case 'updateUser':
@@ -64,19 +64,19 @@ try {
             $userController->updateUser();
             break;
         case 'editBookForm':
-            $bookController = new bookController();
+            $bookController = new BookController();
             $bookController->showEditBookForm();
             break;
         case 'editBook':
-            $bookController = new bookController();
+            $bookController = new BookController();
             $bookController->updateBook();
             break;
         case 'createBook':
-            $bookController = new bookController();
+            $bookController = new BookController();
             $bookController->createBook();
             break;
         case 'deleteBook':
-            $bookController = new bookController();
+            $bookController = new BookController();
             $bookController->deleteBook();
             break;
         case 'profile':
@@ -84,12 +84,18 @@ try {
             $userController->showPublicProfile();
             break;
         case 'mailbox':
-            $messageController = new chatController();
+            $messageController = new ConversationController();
             $messageController->showChatBox();
             break;
         case 'updateBook':
-            $bookController = new bookController();
+            $bookController = new BookController();
             $bookController->updateBook();
+            break;
+
+        /* Route dynamique (AJAX) */
+        case 'sendMessage':
+            $messageController = new ConversationController();
+            $messageController->sendMessage();
             break;
 
         default:

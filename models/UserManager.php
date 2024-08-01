@@ -13,8 +13,8 @@ class UserManager
     {
         $this->db->executeRequest("INSERT INTO users (username,password,email) VALUES (?, ?, ?)", [
             Utils::secureInput($username),
-            Utils::secureInput($email),
             $password,
+            Utils::secureInput($email),
         ]);
         $idUser = $this->db->lastId();
         return $this->getUserById($idUser);
@@ -29,14 +29,20 @@ class UserManager
             $user->getId()
         ]);
     }
-    public function deleteUser(User $user): void{
+    public function deleteUser(User $user): void
+    {
         $this->db->executeRequest("DELETE FROM users WHERE idUser = ?", [$user->getId()]);
     }
     /* Methods which read datas */
     public function getUserByEmail(string $email): ?User
     {
-        $user = $this->db->executeRequest("SELECT * FROM users WHERE email = ?", [$email])[0] ?? null;
-        return new User($user['username'], $user['email'], $user['password'], $user['avatarFilename'], $user['createdAt'], $user['idUser']);
+        $user = $this->db->executeRequest("SELECT * FROM users WHERE email = ?", [$email]);
+        if ($user){
+            $user = $user[0];
+            return new User($user['username'], $user['email'], $user['password'], $user['avatarFilename'], $user['createdAt'], $user['idUser']);
+        }
+        else
+            return null;
     }
     public function getUserById(int $id): User
     {

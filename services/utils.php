@@ -123,6 +123,23 @@ class Utils
     {
         return htmlspecialchars(trim($input));
     }
+    public static function formatTimestamp($timestamp) {
+        // Convertir le timestamp en objet DateTime
+        $date = new DateTime($timestamp);
+        $now = new DateTime();
+
+        // Calculer la différence entre maintenant et la date du timestamp
+        $interval = $now->diff($date);
+    
+        // Vérifier si la différence est inférieure à 24 heures
+        if ($interval->days < 1) {
+            // Retourner l'heure au format hh:mm
+            return $date->format('H:i');
+        } else {
+            // Retourner la date au format jj.mm
+            return $date->format('d.m');
+        }
+    }
 
 }
 

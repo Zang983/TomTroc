@@ -1,18 +1,21 @@
+<?php
+$conversationController = new conversationController();
+$unreadMessageCount = $conversationController->countUnreadMessage();
+?>
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title?></title>
+    <title><?= $title ?></title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital@0;1&display=swap"
+        rel="stylesheet">
 </head>
-
 <body>
-
     <header>
         <nav>
             <img src="./assets/logo.svg" alt="Logo TomTroc">
@@ -25,7 +28,8 @@
                 if (isset($_SESSION['user'])) {
                     ?>
                     <div>
-                        <a href="index.php?action=mailbox">Messagerie</a>
+                        <a href="index.php?action=mailbox">Messagerie
+                            <?= '(' . $unreadMessageCount . ')' ?></a>
                         <a href="index.php?action=myProfile">Mon compte</a>
                         <a href="index.php?action=logout">Déconnexion</a>
                     </div>
@@ -53,8 +57,6 @@
         <img src="./assets/tt.svg" alt="">
     </footer>
 
+    <script src="./app.js"></script>
 </body>
-
-<script src="./app.js"></script>
-
 </html>
