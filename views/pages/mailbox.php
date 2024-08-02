@@ -6,8 +6,9 @@
             $conversation = $entry['conversation'];
             $receiver = $entry['receiver'];
             ?>
-            <a href="index.php?action=mailbox&idReceiver=<?= $conversation->getIdUser2() ?>">
-                <figure class="chatlist--item">
+            <a href="index.php?action=mailbox&conversationId=<?= $conversation->getId() ?>">
+                <figure
+                    class="chatlist--item <?php (isset($_GET["idConversation"]) && $conversation->getId() == $_GET["idConversation"]) ? "active" : null ?>">
                     <img src=<?= Utils::filepath($receiver->getAvatar(), true) ?> alt="avatar">
                     <figcaption>
                         <h4>
@@ -26,7 +27,10 @@
     </section>
     <section id="chat">
         <?php if (isset($messages)) { ?>
-            <h3>Conversation</h3>
+            <h3 class="font-semibold">
+                <img src=<?= Utils::filepath($receiver->getAvatar(), true) ?> alt="avatar">
+                <?= $receiver->getUsername() ?>
+            </h3>
             <?php
             foreach ($messages as $message) {
                 ?>
@@ -34,7 +38,7 @@
                     class="message <?= $message->getAuthorId() == $_SESSION['user']->getId() ? "own_message" : "received_message" ?>">
                     <h5>
                         <?= $message->getAuthorId() != $_SESSION['user']->getId() ?
-                            '<img src=' . Utils::filepath($receiver->getAvatar()) . ' alt="avatar">'
+                            '<img src=' . Utils::filepath($receiver->getAvatar(), true) . ' alt="avatar">'
                             :
                             null ?>
                         <?= Utils::formatTimestamp($message->getCreatedAt()) ?>
@@ -45,9 +49,9 @@
             } ?>
 
             <form action="index.php?action=sendMessage&idReceiver=<?= $receiver->getId() ?>" method="post">
-                <textarea name="message" id="message" cols="30" rows="10"></textarea>
-                <button type="submit">Envoyer</button>
-            <?php
+                <input placeholder="Tapez votre message ici" type="text" name="message" id="message">
+                <button type="submit" class="primary_button font-semibold">Envoyer</button>
+                <?php
         } else {
             echo "<h2>Sélectionnez une conversation !</h2>";
         }

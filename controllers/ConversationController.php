@@ -4,7 +4,7 @@ class ConversationController
 {
     public function showMailBox()
     {
-        if (isset($_GET['idReceiver'])) {
+        if (isset($_GET['conversationId'])) {
             $this->getAllMessages();
             return;
         }
@@ -15,13 +15,12 @@ class ConversationController
     }
     public function getAllMessages()
     {
-        $idReceiver = isset($_GET['idReceiver']) ? intval($_GET['idReceiver'], 10) : -1;
+        $conversationId = isset($_GET['conversationId']) ? intval($_GET['conversationId'], 10) : -1;
         $conversationManager = new ConversationManager();
         $conversationsList = $conversationManager->getAllConversations($_SESSION['user']);
         $messages = [];
-
         foreach ($conversationsList as $entry) {
-            if ($entry['conversation']->getIdUser2() === $idReceiver || $entry['conversation']->getIdUser1() === $idReceiver) {
+            if ($entry['conversation']->getId() == $conversationId) {
                 $messageManager = new MessageManager();
                 $messages = $messageManager->getAllMessages($entry['conversation']->getId());
                 $isUser2 = $entry['conversation']->getIdUser2() === $_SESSION['user']->getId();
