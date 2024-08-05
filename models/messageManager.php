@@ -24,7 +24,6 @@ class MessageManager
                 $rawData["authorId"],
                 $rawData["conversationId"],
                 $rawData["idMessage"],
-
             );
         }
         return $messages;

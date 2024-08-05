@@ -97,6 +97,11 @@ try {
             $messageController = new ConversationController();
             $messageController->sendMessage();
             break;
+        //Equivalent PHP
+        case 'openChat':
+            $messageController = new ConversationController();
+            $messageController->openChat();
+            break;
 
         default:
             throw new Exception("La page demandée n'existe pas.");

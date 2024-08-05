@@ -13,10 +13,9 @@
                     <figcaption>
                         <h4>
                             <?= $receiver->getUsername() ?>
-                            <span><?= Utils::formatTimestamp($conversation->getTimestampLastMessage()) ?></span>
+                            <span><?= $conversation->getId() !== -1 ? Utils::formatTimestamp($conversation->getTimestampLastMessage()) : null ?></span>
                         </h4>
                         <p><?= $conversation->getContentLastMessage() ?></p>
-
                     </figcaption>
                 </figure>
             </a>
@@ -50,7 +49,8 @@
 
             <form action="index.php?action=sendMessage&idReceiver=<?= $receiver->getId() ?>" method="post">
                 <input placeholder="Tapez votre message ici" type="text" name="message" id="message">
-                <button type="submit" data-idReceiver = "<?= $receiver->getId()?>" class="primary_button font-semibold">Envoyer</button>
+                <button type="submit" data-idReceiver="<?= $receiver->getId() ?>"
+                    class="primary_button font-semibold">Envoyer</button>
                 <?php
         } else {
             echo "<h2>Sélectionnez une conversation !</h2>";

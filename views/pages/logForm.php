@@ -1,5 +1,7 @@
 <section class="connexion">
-
+    <h1>
+        <?= $_GET["action"] === "inscription" ? "Inscription" : "Connexion" ?>
+    </h1>
     <form method="POST"
         action='index.php?action=<?= $_GET["action"] === "inscription" ? "createUser" : "connectUser" ?>'>
         <?php

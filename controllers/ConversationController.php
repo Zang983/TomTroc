@@ -32,7 +32,36 @@ class ConversationController
         $view = new View('Votre messagerie');
         $view->render('mailBox', ['conversationsList' => $conversationsList, 'messages' => $messages]);
     }
+    public function openChat()
+    {
+        $conversationManager = new ConversationManager();
+        $conversationsList = $conversationManager->getAllConversations($_SESSION['user']);
 
+        $idReceiver = isset($_GET['idReceiver']) ? intval($_GET['idReceiver'], 10) : -1;
+        if ($idReceiver === -1) {
+            Utils::redirect('mailbox');
+        }
+        foreach ($conversationsList as $entry) {
+            if (($entry['conversation']->getIdUser2() === $idReceiver) || ($entry['conversation']->getIdUser1() === $idReceiver)) {
+                $messageManager = new MessageManager();
+                $messages = $messageManager->getAllMessages($entry['conversation']->getId());
+                $isUser2 = $entry['conversation']->getIdUser2() === $_SESSION['user']->getId();
+                $isUser2 ? $entry['conversation']->setLastOpeningUser2(date('Y-m-d H:i:s')) : $entry['conversation']->setLastOpeningUser1(date('Y-m-d H:i:s'));
+                $conversationManager->updateConversation($entry['conversation']);
+                $view = new View('Votre messagerie');
+                $view->render('mailBox', ['conversationsList' => $conversationsList, 'messages' => $messages]);
+            }
+        }
+        $userManager = new UserManager();
+        $newConv = [
+            'conversation'=>new Conversation($_SESSION['user']->getId(), $idReceiver, '', null, null, null), 'receiver'=>$userManager->getUserById($idReceiver)
+        ];
+        $conversationsList[] = $newConv;
+        var_dump($conversationsList);
+        $view = new View('Votre messagerie');
+        $view->render('mailBox', ['conversationsList' => $conversationsList, 'messages' => []]);
+
+    }
     public function sendMessage()
     {
         /* Pour écrire un message, on vérifie si la conversation entre les deux utilisateur existe, on récupère l'id de l'utilisateur de session, puis celui transmis en paramètre.
@@ -71,10 +100,14 @@ class ConversationController
             }
             $messageManager = new MessageManager();
             // On crée le nouveau message et on l'enregistre.
-            $message = new Message($contentMessage, date('Y-m-d H:i:s'),  $user->getId(),$conversation->getId());
+            $message = new Message($contentMessage, date('Y-m-d H:i:s'), $user->getId(), $conversation->getId());
             $messageManager->addMessage($message);
             $conversationManager->updateConversation($conversation);
-            echo 'success';
+            if (isset($_GET['ajax'])) {//Si la requête est une requête ajax, on renvoie success.
+                echo 'success';
+            } else
+                Utils::redirect('mailbox&conversationId=' . $conversation->getId());
+
         }
     }
     public function countUnreadMessage()
