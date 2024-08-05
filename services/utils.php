@@ -18,9 +18,9 @@ class Utils
         }
         return null;
     }
-    public static function deleteFile(string $filename, bool $isAvatar = false): void
+    public static function deleteFile(string|null $filename, bool $isAvatar = false): void
     {
-        if ($filename === "no-image.svg") {
+        if ($filename === "no-image.svg" || !$filename) {
             return;
         }
         $target_dir = $isAvatar ? UPLOAD_AVATAR_DIR : UPLOAD_BOOK_DIR;
@@ -45,15 +45,15 @@ class Utils
         if ($duration < 3600) {
             // Less than 1 hour
             $minutes = floor($duration / 60);
-            return $minutes . " minutes";
+            return $minutes . " minute(s)";
         } elseif ($duration < 86400) {
             // Less than 1 day
             $hours = floor($duration / 3600);
-            return $hours . " heures";
+            return $hours . " heure(s)";
         } elseif ($duration < 2592000) {
             // Less than 1 month
             $days = floor($duration / 86400);
-            return $days . " jours";
+            return $days . " jour(s)";
         } elseif ($duration < 31536000) {
             // Less than 1 year
             $months = floor($duration / 2592000);
@@ -61,7 +61,7 @@ class Utils
         } else {
             // 1 year or more
             $years = floor($duration / 31536000);
-            return $years . " années";
+            return $years . " année(s)";
         }
     }
     /**
@@ -71,14 +71,12 @@ class Utils
      */
     public static function filepath(string|null $filename, bool $isAvatar = false): string
     {
-        if (!$filename) {
+        if (!$filename)
             return NO_IMAGE;
-        }
-        if ($isAvatar) {
+        if ($isAvatar)
             return $filename == "no-image.svg" ? NO_IMAGE : "./uploads/avatar/" . $filename;
-        } else {
-            return $filename == "no-image.svg" ? NO_IMAGE : "./uploads/books/" . $filename;
-        }
+
+        return $filename == "no-image.svg" ? NO_IMAGE : "./uploads/books/" . $filename;
     }
     public static function checkInput(array $input): bool
     {
@@ -123,22 +121,22 @@ class Utils
     {
         return htmlspecialchars(trim($input));
     }
-    public static function formatTimestamp($timestamp) {
+    public static function formatTimestamp($timestamp)
+    {
         // Convertir le timestamp en objet DateTime
         $date = new DateTime($timestamp);
         $now = new DateTime();
 
         // Calculer la différence entre maintenant et la date du timestamp
         $interval = $now->diff($date);
-    
+
         // Vérifier si la différence est inférieure à 24 heures
         if ($interval->days < 1) {
             // Retourner l'heure au format hh:mm
             return $date->format('H:i');
-        } else {
-            // Retourner la date au format jj.mm
-            return $date->format('d.m');
         }
+        // Retourner la date au format jj.mm
+        return $date->format('d.m');
     }
 
 }

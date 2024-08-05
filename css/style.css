@@ -678,6 +678,9 @@ margin-bottom:27px;
     padding:18px 11%;
     padding-right:13.64%; 
 }
+.chatlist--item.active{
+    background-color: white;
+}
 .chatlist--item figcaption{
     display:flex;
     gap:7px;

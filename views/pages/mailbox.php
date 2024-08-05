@@ -8,7 +8,7 @@
             ?>
             <a href="index.php?action=mailbox&conversationId=<?= $conversation->getId() ?>">
                 <figure
-                    class="chatlist--item <?php (isset($_GET["idConversation"]) && $conversation->getId() == $_GET["idConversation"]) ? "active" : null ?>">
+                    class="chatlist--item <?= (isset($_GET["conversationId"]) && $conversation->getId() == $_GET["conversationId"]) ? "active" : null ?>">
                     <img src=<?= Utils::filepath($receiver->getAvatar(), true) ?> alt="avatar">
                     <figcaption>
                         <h4>
@@ -50,7 +50,7 @@
 
             <form action="index.php?action=sendMessage&idReceiver=<?= $receiver->getId() ?>" method="post">
                 <input placeholder="Tapez votre message ici" type="text" name="message" id="message">
-                <button type="submit" class="primary_button font-semibold">Envoyer</button>
+                <button type="submit" data-idReceiver = "<?= $receiver->getId()?>" class="primary_button font-semibold">Envoyer</button>
                 <?php
         } else {
             echo "<h2>Sélectionnez une conversation !</h2>";

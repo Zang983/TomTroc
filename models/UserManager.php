@@ -41,7 +41,6 @@ class UserManager
             $user = $user[0];
             return new User($user['username'], $user['email'], $user['password'], $user['avatarFilename'], $user['createdAt'], $user['idUser']);
         }
-        else
             return null;
     }
     public function getUserById(int $id): User

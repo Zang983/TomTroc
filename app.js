@@ -66,5 +66,36 @@ if (action === 'detailBook') {
         }
         ajaxRequest.send(`message=${message}`)
     })
+}
+
+/* Page mailbox */
+if (action === 'mailbox') {
+  
+    const form = document.querySelector('form')
+
+
+    /* Envoi requête AJAX*/
+    const submitBtn = document.querySelector('button[type="submit"]')
+
+    submitBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+        const message = document.querySelector('#message').value
+        const idReceiver = submitBtn.getAttribute('data-idReceiver')
+
+        const ajaxRequest = new XMLHttpRequest()
+        ajaxRequest.open('POST', `index.php?action=sendMessage&idReceiver=${idReceiver}`, true)
+        ajaxRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+
+        ajaxRequest.onload = () => {
+            if (ajaxRequest.status === 200 && ajaxRequest.readyState === 4 && ajaxRequest.responseText === 'success') {
+                form.classList.add('success')
+                alert();
+            }
+            else {
+                form.classList.add('error')
+            }
+        }
+        ajaxRequest.send(`message=${message}`)
+    })
 
 }

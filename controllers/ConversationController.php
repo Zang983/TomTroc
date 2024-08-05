@@ -71,7 +71,7 @@ class ConversationController
             }
             $messageManager = new MessageManager();
             // On crée le nouveau message et on l'enregistre.
-            $message = new Message($contentMessage, date('Y-m-d H:i:s'), $conversation->getId(), $user->getId());
+            $message = new Message($contentMessage, date('Y-m-d H:i:s'),  $user->getId(),$conversation->getId());
             $messageManager->addMessage($message);
             $conversationManager->updateConversation($conversation);
             echo 'success';
