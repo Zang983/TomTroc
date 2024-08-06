@@ -10,9 +10,6 @@ class UserController
     }
     public function userProfile(): void
     {
-        if (!isset($_SESSION['user'])) {
-            throw new Exception("Vous devez être connecté pour accéder à cette page");
-        }
         $bookManager = new BookManager();
         $library = $bookManager->getBooksByUser($_SESSION['user']->getId());
         $view = new View("Modification de votre profil");
@@ -42,10 +39,13 @@ class UserController
     /* form processing methods */
     public function createUser(): void
     {
-        if (!Utils::checkValidityForm([
-            ['value' => $_POST['username'],'type' => "text"],
-            ['value' => $_POST['email'], 'type' => 'text'],
-            ['value' => $_POST['password'], 'type' => 'text']]))
+        if (
+            !Utils::checkValidityForm([
+                ['value' => $_POST['username'], 'type' => "text"],
+                ['value' => $_POST['email'], 'type' => 'text'],
+                ['value' => $_POST['password'], 'type' => 'text']
+            ])
+        )
             throw new Exception("Tous les champs ne sont pas remplis");
 
         $userManager = new UserManager();
@@ -60,16 +60,20 @@ class UserController
         }
         $userManager = new UserManager();
         $user = $_SESSION['user'];
+        $newUsername = $_POST['username'] ?? null;
+        $newEmail = $_POST['email'] ?? null;
+        $newPassword = $_POST['password'] ?? null;
+
         $haveNewData = false;
-        if (isset($_POST['username']) && !empty($_POST['username']) && $_POST['username'] !== $user->getUsername()) {
+        if (Utils::checkInput(['value'=>$newUsername,'type'=>'username']) && $newUsername !== $user->getUsername()) {
             $haveNewData = true;
             $user->setUsername($_POST['username']);
         }
-        if (isset($_POST['email']) && !empty($_POST['email']) && $_POST['email'] !== $user->getEmail()) {
+        if (Utils::checkInput(['value'=>$newEmail,'type'=>'email']) && $newEmail !== $user->getEmail()) {
             $haveNewData = true;
             $user->setEmail($_POST['email']);
         }
-        if (isset($_POST['password']) && !empty($_POST['password'])) {
+        if ($newPassword && Utils::checkInput(['value'=>$newPassword,'type'=>'password'])) {
             $haveNewData = true;
             $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
         }
@@ -100,11 +104,8 @@ class UserController
     }
     public function logout(): void
     {
-        session_start();
         unset($_SESSION['user']);
         session_destroy();
         Utils::redirect("home");
     }
-
-
 }

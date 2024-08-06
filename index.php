@@ -9,9 +9,24 @@ $action = 'home';
 if (isset($_GET['action']))
     $action = $_GET['action'];
 
+$actions = [//Liste des actions possibles nécessitant d'être connecté.
+    'myProfile',
+    'newBookForm',
+    'updateUser',
+    'editBookForm',
+    'editBook',
+    'createBook',
+    'deleteBook',
+    'mailbox',
+    'updateBook',
+    'sendMessage',
+    'openChat'
+];
 // Try catch global pour gérer les erreurs
 try {
-    // Pour chaque action, on appelle le bon contrôleur et la bonne méthode.
+    if (in_array($action, $actions) && !isset($_SESSION['user'])) {
+        throw new Exception("Vous devez être connecté pour accéder à cette page.");
+    }
     switch ($action) {
         // Pages accessibles à tous.
         case 'home':
@@ -102,7 +117,6 @@ try {
             $messageController = new ConversationController();
             $messageController->openChat();
             break;
-
         default:
             throw new Exception("La page demandée n'existe pas.");
     }

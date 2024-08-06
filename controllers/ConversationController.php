@@ -23,11 +23,15 @@ class ConversationController
             if ($entry['conversation']->getId() == $conversationId) {
                 $messageManager = new MessageManager();
                 $messages = $messageManager->getAllMessages($entry['conversation']->getId());
+                // We check if the user is the user1 or the user2 of the conversation, and we update the last opening date.
                 $isUser2 = $entry['conversation']->getIdUser2() === $_SESSION['user']->getId();
                 $isUser2 ? $entry['conversation']->setLastOpeningUser2(date('Y-m-d H:i:s')) : $entry['conversation']->setLastOpeningUser1(date('Y-m-d H:i:s'));
                 $conversationManager->updateConversation($entry['conversation']);
                 break;
             }
+        }
+        if (!$messages) {//If the conversation doesn't exist, we redirect to the mailbox.
+            Utils::redirect('mailbox');
         }
         $view = new View('Votre messagerie');
         $view->render('mailBox', ['conversationsList' => $conversationsList, 'messages' => $messages]);
@@ -36,11 +40,11 @@ class ConversationController
     {
         $conversationManager = new ConversationManager();
         $conversationsList = $conversationManager->getAllConversations($_SESSION['user']);
-
         $idReceiver = isset($_GET['idReceiver']) ? intval($_GET['idReceiver'], 10) : -1;
-        if ($idReceiver === -1) {
+        if ($idReceiver === $_SESSION['user']->getId() || $idReceiver === -1) {
             Utils::redirect('mailbox');
         }
+
         foreach ($conversationsList as $entry) {
             if (($entry['conversation']->getIdUser2() === $idReceiver) || ($entry['conversation']->getIdUser1() === $idReceiver)) {
                 $messageManager = new MessageManager();
@@ -50,17 +54,21 @@ class ConversationController
                 $conversationManager->updateConversation($entry['conversation']);
                 $view = new View('Votre messagerie');
                 $view->render('mailBox', ['conversationsList' => $conversationsList, 'messages' => $messages]);
+                return;
             }
         }
         $userManager = new UserManager();
+        $receiver = $userManager->getUserById($idReceiver);
+        if (!$receiver) {
+            Utils::redirect('mailbox');
+        }
         $newConv = [
-            'conversation'=>new Conversation($_SESSION['user']->getId(), $idReceiver, '', null, null, null), 'receiver'=>$userManager->getUserById($idReceiver)
+            'conversation' => new Conversation($_SESSION['user']->getId(), $idReceiver, '', null, null, null),
+            'receiver' => $userManager->getUserById($idReceiver)
         ];
         $conversationsList[] = $newConv;
-        var_dump($conversationsList);
         $view = new View('Votre messagerie');
         $view->render('mailBox', ['conversationsList' => $conversationsList, 'messages' => []]);
-
     }
     public function sendMessage()
     {

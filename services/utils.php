@@ -80,6 +80,7 @@ class Utils
     }
     public static function checkInput(array $input): bool
     {
+        $input['value'] = trim($input['value']);
         switch ($input['type']) {
             case 'email':
                 if (!filter_var($input['value'], FILTER_VALIDATE_EMAIL)) {
@@ -119,7 +120,7 @@ class Utils
     }
     public static function secureInput(string $input): string
     {
-        return htmlspecialchars(trim($input));
+        return htmlspecialchars($input);
     }
     public static function formatTimestamp($timestamp)
     {

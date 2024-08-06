@@ -1,9 +1,11 @@
 <?php
 $conversationController = new conversationController();
 $unreadMessageCount = $conversationController->countUnreadMessage();
+$action = isset($_GET['action']) ? $_GET['action'] : null;
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,22 +17,28 @@ $unreadMessageCount = $conversationController->countUnreadMessage();
         href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital@0;1&display=swap"
         rel="stylesheet">
 </head>
+
 <body>
     <header>
         <nav>
             <img src="./assets/logo.svg" alt="Logo TomTroc">
             <div>
-                <a href="index.php?action=home">Accueil</a>
-                <a href="index.php?action=market" class="font-bold">Nos livres à l'échange</a>
+                <a href="index.php?action=home" <?= ($action === 'home' || $action === null) ? 'class="font-semibold"' : null ?>>Accueil</a>
+                <a href="index.php?action=market" <?= ($action === 'market') ? 'class="font-semibold"' : null ?>>Nos livres à l'échange</a>
             </div>
             <div class="headerMenu">
                 <?php
                 if (isset($_SESSION['user'])) {
                     ?>
                     <div>
-                        <a href="index.php?action=mailbox">Messagerie
+                        <a href="index.php?action=mailbox" <?= ($action === 'mailbox' || $action === 'openChat') ? 'class="font-semibold"' : null ?>>
+                            <img src="./assets/messagerie_icon.svg" alt="" width="15" height="13">
+                            Messagerie
                             <?= '(' . $unreadMessageCount . ')' ?></a>
-                        <a href="index.php?action=myProfile">Mon compte</a>
+                        <a href="index.php?action=myProfile" <?= ($action === 'myProfile') ? 'class="font-semibold"' : null ?>>
+                            <img src="./assets/my_account.svg" alt="" width="10" height="13">
+                            Mon compte
+                        </a>
                         <a href="index.php?action=logout">Déconnexion</a>
                     </div>
                     <?php
@@ -59,4 +67,5 @@ $unreadMessageCount = $conversationController->countUnreadMessage();
 
     <script src="./app.js"></script>
 </body>
+
 </html>

@@ -23,6 +23,12 @@ class BookController
             throw new Exception("Vous devez spécifier un livre à modifier");
         }
         $book = $bookManager->getBookById($_GET['id']);
+        if (!$book) {
+            throw new Exception("Ce livre n'existe pas.");
+        }
+        if ($book->getOwnerId() !== $_SESSION['user']->getId()) {
+            throw new Exception("Vous n'avez pas les droits pour modifier ce livre.");
+        }
         $view = new View("Editer un livre");
         $view->render("editBook", ["book" => $book]);
     }
@@ -38,11 +44,15 @@ class BookController
     {
         $bookManager = new BookManager();
         $datas = $bookManager->getBookById($_GET['idBook'], true);
+        if (!$datas) {
+            throw new Exception("Ce livre n'existe pas.");
+        }
         $book = $datas['book'];
         $user = $datas['user'];
         $view = new View("Détail du livre");
         $view->render("detailBook", ["book" => $book, "user" => $user]);
     }
+
     /* form processing methods */
     public function updateBook(): void
     {
@@ -51,6 +61,12 @@ class BookController
         }
         $bookManager = new BookManager();
         $actualDatas = $bookManager->getBookById($_GET['id']);
+        if (!$actualDatas) {
+            throw new Exception("Ce livre n'existe pas.");
+        }
+        if ($actualDatas->getOwnerId() !== $_SESSION['user']->getId()) {
+            throw new Exception("Vous n'avez pas les droits pour modifier ce livre.");
+        }
         $newTitle = $_POST['title'];
         $newDescription = $_POST['description'];
         $newAuthor = $_POST['author'];
@@ -84,7 +100,7 @@ class BookController
         $author = $_POST['author'] ?? null;
         $availability = intval($_POST['availability'], 10) ?? null;
         if (
-           !Utils::checkValidityForm([['value' => $title, 'type' => "text"], ['value' => $description, 'type' => 'text'], ['value' => $author, 'type' => 'text']])
+            !Utils::checkValidityForm([['value' => $title, 'type' => "text"], ['value' => $description, 'type' => 'text'], ['value' => $author, 'type' => 'text']])
             || $availability === null
         ) {
             /* No detail about form mistakes, it will be improve in a next version.*/

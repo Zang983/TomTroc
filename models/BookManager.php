@@ -32,7 +32,7 @@ class BookManager
     public function updateBook(Book $book): void
     {
         $this->db->executeRequest(
-            'UPDATE books SET title = ?, description = ?, author = ?, availability = ?, imageFilename = ?, updatedAt = ? WHERE idBook = ?',
+            'UPDATE books SET title = ?, description = ?, author = ?, availability = ?, imageFilename = ?, updatedAt = ? WHERE idBook = ? AND ownerId = ?',
             [
                 $book->getTitle(),
                 $book->getDescription(),
@@ -40,7 +40,8 @@ class BookManager
                 $book->getAvailability() === null ? null : intval($book->getAvailability(), 10),
                 $book->getFilename() === 'no-image.svg' ? null : $book->getFilename(),
                 date('Y-m-d H:i:s', time()),
-                $book->getId()
+                $book->getId(),
+                $book->getOwnerId()
             ]
         );
 
@@ -70,16 +71,22 @@ class BookManager
         }, $rawDatas);
         return $datas;
     }
-    function getBookById(int $id, bool $includeOwner = false): array|Book
+    function getBookById(int $id, bool $includeOwner = false): array|Book|null
     {
         if ($includeOwner) {
             $rawDatas = $this->db->executeRequest('SELECT * FROM books INNER JOIN users ON books.OwnerId = users.idUser WHERE idBook = ?', [$id]);
+            if (!$rawDatas) {
+                return null;
+            }
             return [
                 'book' => new Book($rawDatas[0]['title'], $rawDatas[0]['description'], $rawDatas[0]['author'], $rawDatas[0]['availability'], $rawDatas[0]['imageFilename'], $rawDatas[0]['ownerId'], $rawDatas[0]['idBook']),
                 'user' => new User($rawDatas[0]['username'], $rawDatas[0]['email'], $rawDatas[0]['password'], $rawDatas[0]['avatarFilename'], $rawDatas[0]['createdAt'], $rawDatas[0]['idUser'])
             ];
         }
         $rawDatas = $this->db->executeRequest('SELECT * FROM books WHERE idBook = ?', [$id]);
+        if (!$rawDatas) {
+            return null;
+        }
         return new Book($rawDatas[0]['title'], $rawDatas[0]['description'], $rawDatas[0]['author'], $rawDatas[0]['availability'], $rawDatas[0]['imageFilename'], $rawDatas[0]['ownerId'], $rawDatas[0]['idBook']);
     }
     public function getBooksByUser(int $userId): array
@@ -98,7 +105,7 @@ class BookManager
      */
     public function searchBooks(string $search): array
     {
-        $rawDatas = $this->db->executeRequest('SELECT * FROM books INNER JOIN users WHERE books.ownerId = users.idUser AND( title  LIKE ? OR author LIKE ?)', ['%' . $search . '%','%' . $search . '%']);
+        $rawDatas = $this->db->executeRequest('SELECT * FROM books INNER JOIN users WHERE books.ownerId = users.idUser AND( title  LIKE ? OR author LIKE ?)', ['%' . $search . '%', '%' . $search . '%']);
         $datas = array_map(function ($datas) {
             return [
                 'book' => new Book($datas['title'], $datas['description'], $datas['author'], $datas['availability'], $datas['imageFilename'], $datas['ownerId'], $datas['idBook']),

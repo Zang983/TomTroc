@@ -16,11 +16,11 @@ $link = $book ? 'index.php?action=editBook&id=' . $book->getId() : 'index.php?ac
         <form method="POST" enctype="multipart/form-data" action=<?= $link ?>>
             <label>
                 Titre du livre
-                <input type="text" name="title" placeholder="Titre du livre" value=<?= $book ? $book->getTitle() : "" ?>>
+                <input type="text" name="title" placeholder="Titre du livre" value="<?= $book ? $book->getTitle() : "" ?>">
             </label>
             <label>
                 Auteur
-                <input type="text" name="author" placeholder="Auteur du livre." value=<?= $book ? $book->getAuthor() : "" ?>>
+                <input type="text" name="author" placeholder="Auteur du livre." value="<?= $book ? $book->getAuthor() : "" ?>">
             </label>
             <label>
                 Commentaire

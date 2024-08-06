@@ -37,15 +37,17 @@ class UserManager
     public function getUserByEmail(string $email): ?User
     {
         $user = $this->db->executeRequest("SELECT * FROM users WHERE email = ?", [$email]);
-        if ($user){
+        if ($user) {
             $user = $user[0];
             return new User($user['username'], $user['email'], $user['password'], $user['avatarFilename'], $user['createdAt'], $user['idUser']);
         }
-            return null;
+        return null;
     }
-    public function getUserById(int $id): User
+    public function getUserById(int $id): User|null
     {
-        $user = $this->db->executeRequest("SELECT * FROM users WHERE idUser = ?", [$id])[0];
-        return new User($user['username'], $user['email'], $user['password'], $user['avatarFilename'], $user['createdAt'], $user['idUser']);
+        $user = $this->db->executeRequest("SELECT * FROM users WHERE idUser = ?", [$id])[0] ?? null;
+        if ($user)
+            return new User($user['username'], $user['email'], $user['password'], $user['avatarFilename'], $user['createdAt'], $user['idUser']);
+        return null;
     }
 }
