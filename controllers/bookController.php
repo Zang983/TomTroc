@@ -41,14 +41,15 @@ class BookController
     public function showMarket(): void
     {
         $bookManager = new BookManager();
-        $books = isset($_POST['search']) ? $bookManager->searchBooks($_POST['search']) : $bookManager->getAllBooks();
+        $datas = isset($_POST['search']) ? $bookManager->searchBooks($_POST['search']) : $bookManager->getAllBooks();
         $title = isset($_POST['search']) ? "Résultats de la recherche" : "Livres à l'échange";
-        $books = array_map(function ($book) {
-            $book->secureForDisplay();
-            return $book;
-        }, $books);
+        $datas = array_map(function ($entry) {
+            $entry['user']->secureForDisplay();
+            $entry['book']->secureForDisplay();
+            return $entry;
+        }, $datas);
         $view = new View($title);
-        $view->render("market", ["datas" => $books]);
+        $view->render("market", ["datas" => $datas]);
     }
     public function detailBook(): void
     {
@@ -133,7 +134,5 @@ class BookController
         $bookManager = new BookManager();
         $bookManager->deleteBookById($_GET['id'], $_SESSION['user']->getId());
         Utils::redirect('myProfile');
-
     }
-
 }

@@ -1,9 +1,9 @@
 <section class="connexion">
-    <h1>
-        <?= $_GET["action"] === "inscription" ? "Inscription" : "Connexion" ?>
-    </h1>
     <form method="POST"
         action='index.php?action=<?= $_GET["action"] === "inscription" ? "createUser" : "connectUser" ?>'>
+        <h1 class="playfair-font">
+            <?= $_GET["action"] === "inscription" ? "Inscription" : "Connexion" ?>
+        </h1>
         <?php
         if ($_GET["action"] === "inscription") { ?>
             <label>
@@ -13,7 +13,6 @@
             <?php
         }
         ?>
-
         <label>
             Email
             <input type="text" name="email" autocomplete="username">

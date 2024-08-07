@@ -28,16 +28,15 @@ if (action === 'market') {
 
 /* Page detail book */
 
-if (action === 'detailBook') {
+if (action === 'detailBook' || action === "profile") {
     const dialog = document.querySelector('dialog')
     const modaleOpenerBtn = document.querySelector('button')
     const closeBtn = document.querySelector('.close_button')
-    const form = dialog.querySelector('form')
-    const linkHaveToHide = document.querySelector('a.primary_button')
-    if(linkHaveToHide)
+
+    const linkHaveToHide = document.querySelector('a.primary_button,a.secondary_button')
+    if (linkHaveToHide)
         linkHaveToHide.classList.add('hidden')
     modaleOpenerBtn.classList.remove('hidden')
-
 
 
     /* Gestion de la modale :*/
@@ -53,6 +52,7 @@ if (action === 'detailBook') {
 
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault()
+        const form = dialog.querySelector('form')
         const message = document.querySelector('#message').value
         const idReceiver = submitBtn.getAttribute('data-idReceiver')
         const ajaxRequest = new XMLHttpRequest()

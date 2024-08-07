@@ -40,7 +40,13 @@ header nav{
     width:100%;
     display:flex;
     align-items: center;
-    justify-content: space-between;
+    gap:78px;
+
+}
+.headerMenu{
+    flex:1;
+    justify-content: flex-end;
+
 }
 header nav div {
     display:flex;
@@ -305,6 +311,7 @@ Page profile
 .profile{
     background-color: var(--secondary-bg-color);
     padding:90px 155px;
+    flex:1;
 }
 
 .profile.profile--public{
@@ -326,6 +333,10 @@ Page profile
     gap:33px;
     margin-top:48px;
 }
+.account_detail .registration_duration{
+    color:var(--primary-gray);
+    font-size:14px;
+}
 .account_detail .playfair-font{
 font-size:24px;
 }
@@ -339,6 +350,12 @@ font-size:24px;
     display:flex;
     flex-direction: column;
     align-items: center;
+}
+.account_detail .librairy_count h3{
+font-size:8px;
+}
+.account_detail .librairy_count p{
+    font-size:14px;
 }
 .account_detail .avatar{
     width:135px;
@@ -360,12 +377,21 @@ font-size:24px;
 }
 .account_librairy{
     margin-top:32px;
-    display:grid;
-    grid-template-columns: repeat(6,1fr);
-    padding-left:66px;
-    padding-right:80px;
+    /* padding-left:66px;
+    padding-right:80px; */
     background-color: white;
     border-radius: 20px;
+}
+.account_librairy table tr{
+    max-height:130px;
+    height:130px;
+    background-color:red;
+    padding:0 25px;
+}
+.account_librairy table td div{
+    max-height:130px;
+    height:130px;
+    overflow: hidden;
 }
 .edit_profile_form{
     display:flex;
@@ -476,7 +502,7 @@ margin-bottom: 80px;
     border-radius: 100%;
 }
 
-.detail_book dialog[open]{
+dialog[open]{
 margin:auto;
 outline:none;
 border:none;
@@ -484,7 +510,7 @@ border-radius:20px;
 border:1px solid black;
 padding:30px 20px;
 position:relative;
-width:30%;
+width:45%;
 }
 #modale_opener{
     margin-bottom:80px;
@@ -494,22 +520,23 @@ width:30%;
     flex-direction: column;
 }
 #modale_closer{
-    font-size:10px;
+    font-size:12px;
     position:absolute;
-    top:15px;
-    right:15px;
+    top:25px;
+    right:20px;
     border:1px solid blue;
     background-color:inherit;
     outline:none;
     border-radius:100%;
-    width:15px;
-    height:15px;
+    width:20px;
+    height:20px;
     cursor: pointer;
 }
 .dialog_container form{
     display:flex;
     flex-direction: column;
     gap:10px;
+    width:100%;
 }
 .dialog_container textarea{
     padding:10px;
@@ -537,6 +564,13 @@ Page create_edit_book
     background-color:var(--secondary-bg-color);
     padding:40px 150px;
     padding-bottom:80px;
+}
+.create_edit_book a{
+    color:var(--primary-gray);
+    font-size:14px;
+}
+.create_edit_book h1{
+    margin-top:23px;
 }
 .create_edit_book>div{
     width:100%;
@@ -606,6 +640,7 @@ border-radius: 20px;
     flex-direction: row;
     background-color: var(--secondary-bg-color);
 }
+
 .connexion div{
     display:flex;
 }
