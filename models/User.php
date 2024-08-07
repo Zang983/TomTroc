@@ -51,5 +51,9 @@ class User {
     public function getCreatedAt():string{
         return $this->createdAt;
     }
+    public function secureForDisplay():void{
+        $this->username = htmlspecialchars($this->username, ENT_QUOTES,"UTF-8");
+        $this->avatar = htmlspecialchars($this->avatar, ENT_QUOTES,"UTF-8");
+    }
 
 }

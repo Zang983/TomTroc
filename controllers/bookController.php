@@ -8,6 +8,11 @@ class BookController
     {
         $bookManager = new BookManager();
         $datas = $bookManager->getLastBooks();
+        $datas = array_map(function ($entry) {
+            $entry['book']->secureForDisplay();
+            $entry['user']->secureForDisplay();
+            return $entry;
+        }, $datas);
         $view = new View("Accueil");
         $view->render("home", ["datas" => $datas]);
     }
@@ -29,16 +34,21 @@ class BookController
         if ($book->getOwnerId() !== $_SESSION['user']->getId()) {
             throw new Exception("Vous n'avez pas les droits pour modifier ce livre.");
         }
+        $book->secureForDisplay();
         $view = new View("Editer un livre");
         $view->render("editBook", ["book" => $book]);
     }
     public function showMarket(): void
     {
         $bookManager = new BookManager();
-        $datas = isset($_POST['search']) ? $bookManager->searchBooks($_POST['search']) : $bookManager->getAllBooks();
+        $books = isset($_POST['search']) ? $bookManager->searchBooks($_POST['search']) : $bookManager->getAllBooks();
         $title = isset($_POST['search']) ? "Résultats de la recherche" : "Livres à l'échange";
+        $books = array_map(function ($book) {
+            $book->secureForDisplay();
+            return $book;
+        }, $books);
         $view = new View($title);
-        $view->render("market", ["datas" => $datas]);
+        $view->render("market", ["datas" => $books]);
     }
     public function detailBook(): void
     {
@@ -49,6 +59,8 @@ class BookController
         }
         $book = $datas['book'];
         $user = $datas['user'];
+        $user->secureForDisplay();
+        $book->secureForDisplay();
         $view = new View("Détail du livre");
         $view->render("detailBook", ["book" => $book, "user" => $user]);
     }

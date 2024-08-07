@@ -217,6 +217,7 @@ Page home
 .how_steps p{
     max-width:400px;
     margin-bottom: 40px;
+    text-align: center;
 }
 .cards-container{
 display:flex;

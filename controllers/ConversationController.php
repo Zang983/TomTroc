@@ -10,9 +10,16 @@ class ConversationController
         }
         $conversationManager = new ConversationManager();
         $conversationsList = $conversationManager->getAllConversations($_SESSION['user']);
+        $conversationsList = array_map(function ($conversation) {
+            $conversation['conversation']->secureForDisplay();
+            return $conversation;
+        }, $conversationsList);
         $view = new View('Votre messagerie');
         $view->render('mailBox', ['conversationsList' => $conversationsList]);
     }
+
+
+
     public function getAllMessages()
     {
         $conversationId = isset($_GET['conversationId']) ? intval($_GET['conversationId'], 10) : -1;
@@ -27,12 +34,17 @@ class ConversationController
                 $isUser2 = $entry['conversation']->getIdUser2() === $_SESSION['user']->getId();
                 $isUser2 ? $entry['conversation']->setLastOpeningUser2(date('Y-m-d H:i:s')) : $entry['conversation']->setLastOpeningUser1(date('Y-m-d H:i:s'));
                 $conversationManager->updateConversation($entry['conversation']);
+                $entry['conversation']->secureForDisplay();
                 break;
             }
         }
         if (!$messages) {//If the conversation doesn't exist, we redirect to the mailbox.
             Utils::redirect('mailbox');
         }
+        $messages = array_map(function ($message) {
+            $message->secureForDisplay();
+            return $message;
+        }, $messages);
         $view = new View('Votre messagerie');
         $view->render('mailBox', ['conversationsList' => $conversationsList, 'messages' => $messages]);
     }
@@ -52,6 +64,14 @@ class ConversationController
                 $isUser2 = $entry['conversation']->getIdUser2() === $_SESSION['user']->getId();
                 $isUser2 ? $entry['conversation']->setLastOpeningUser2(date('Y-m-d H:i:s')) : $entry['conversation']->setLastOpeningUser1(date('Y-m-d H:i:s'));
                 $conversationManager->updateConversation($entry['conversation']);
+                $conversationsList = array_map(function ($conversation) {
+                    $conversation['conversation']->secureForDisplay();
+                    return $conversation;
+                }, $conversationsList);
+                $messages = array_map(function ($message) {
+                    $message->secureForDisplay();
+                    return $message;
+                }, $messages);
                 $view = new View('Votre messagerie');
                 $view->render('mailBox', ['conversationsList' => $conversationsList, 'messages' => $messages]);
                 return;
@@ -66,6 +86,10 @@ class ConversationController
             'conversation' => new Conversation($_SESSION['user']->getId(), $idReceiver, '', null, null, null),
             'receiver' => $userManager->getUserById($idReceiver)
         ];
+        $conversationsList = array_map(function ($conversation) {
+            $conversation['conversation']->secureForDisplay();
+            return $conversation;
+        }, $conversationsList);
         $conversationsList[] = $newConv;
         $view = new View('Votre messagerie');
         $view->render('mailBox', ['conversationsList' => $conversationsList, 'messages' => []]);
@@ -77,14 +101,13 @@ class ConversationController
 
         On transmet la conversation existante, ou la nouvelle conversation, à la méthode addMessage du MessageManager.
         */
-
         if (isset($_POST['message']) && isset($_GET['idReceiver'])) {
             $conversationManager = new ConversationManager();
             $userManager = new UserManager();
             $user = $_SESSION['user'];
             $idReceiver = intval($_GET['idReceiver'], 10);
             $userExist = $userManager->getUserById($idReceiver);
-            $contentMessage = Utils::secureInput($_POST['message']);
+            $contentMessage = $_POST['message'];
             if (!$userExist) {
                 echo 'inexistant';// Si l'utilisateur n'existe pas, on renvoie inexistant.
             }

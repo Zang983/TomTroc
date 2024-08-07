@@ -80,5 +80,11 @@ class Book
     {
         $this->id = $id;
     }
+    public function secureForDisplay():void{
+        $this->filename = htmlspecialchars($this->filename, ENT_QUOTES,"UTF-8");
+        $this->title = htmlspecialchars($this->title, ENT_QUOTES,"UTF-8");
+        $this->description = htmlspecialchars($this->description, ENT_QUOTES,"UTF-8");
+        $this->author = htmlspecialchars($this->author, ENT_QUOTES,"UTF-8");
+    }
 
 }

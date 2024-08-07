@@ -15,9 +15,9 @@ class BookManager
         $this->db->executeRequest(
             'INSERT INTO books (title, description, author, imageFilename,availability,OwnerId) VALUES (?,?,?,?,?,?)',
             [
-                Utils::secureInput($book->getTitle()),
-                Utils::secureInput($book->getDescription()),
-                Utils::secureInput($book->getAuthor()),
+                $book->getTitle(),
+                $book->getDescription(),
+                $book->getAuthor(),
                 $book->getFilename() === 'no-image.svg' ? null : $book->getFilename(),
                 intval($book->getAvailability(), 10),
                 $book->getOwnerId()

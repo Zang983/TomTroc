@@ -30,18 +30,21 @@ if (action === 'market') {
 
 if (action === 'detailBook') {
     const dialog = document.querySelector('dialog')
-    const btn = document.querySelector('button')
+    const modaleOpenerBtn = document.querySelector('button')
     const closeBtn = document.querySelector('.close_button')
     const form = dialog.querySelector('form')
-    const sendConfirmation = dialog.querySelector("#send_confirmation")
+    const linkHaveToHide = document.querySelector('a.primary_button')
+    if(linkHaveToHide)
+        linkHaveToHide.classList.add('hidden')
+    modaleOpenerBtn.classList.remove('hidden')
+
 
 
     /* Gestion de la modale :*/
-    btn.addEventListener('click', () => {
+    modaleOpenerBtn.addEventListener('click', () => {
         dialog.showModal()
     })
     closeBtn.addEventListener('click', () => {
-
         dialog.close()
     })
 

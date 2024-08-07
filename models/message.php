@@ -44,5 +44,8 @@ class Message
     {
         $this->idConversation = $idConversation;
     }
+    public function secureForDisplay():void{
+        $this->content = htmlspecialchars($this->content, ENT_QUOTES,"UTF-8");
+    }
 
 }

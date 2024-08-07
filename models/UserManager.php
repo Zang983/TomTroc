@@ -12,9 +12,9 @@ class UserManager
     public function createUser(string $username, string $email, string $password): User
     {
         $this->db->executeRequest("INSERT INTO users (username,password,email) VALUES (?, ?, ?)", [
-            Utils::secureInput($username),
+            $username,
             $password,
-            Utils::secureInput($email),
+            $email,
         ]);
         $idUser = $this->db->lastId();
         return $this->getUserById($idUser);
@@ -22,8 +22,8 @@ class UserManager
     public function updateUser(User $user): void
     {
         $this->db->executeRequest("UPDATE users SET username = ?, email = ?, password = ?, avatarFilename = ? WHERE idUser = ?", [
-            Utils::secureInput($user->getUsername()),
-            Utils::secureInput($user->getEmail()),
+            $user->getUsername(),
+            $user->getEmail(),
             $user->getPassword(),
             $user->getAvatar(),
             $user->getId()

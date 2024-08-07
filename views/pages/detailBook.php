@@ -24,19 +24,21 @@
 
             </div>
             <a href="index.php?action=openChat&idReceiver=<?= $user ? $user->getId() : null ?>"
-                class="primary_button primary_button--full_width font-semibold">Envoyer un message</a>
-            <button id="modale_opener" class="hidden primary_button primary_button--full_width font-semibold">Envoyer un
-                message</button>
+                class="primary_button primary_button--full_width font-semibold">
+                Envoyer un message
+            </a>
+            <button id="modale_opener" class="hidden primary_button primary_button--full_width font-semibold">
+                Envoyer un message
+            </button>
 
         </figcaption>
     </figure>
     <dialog>
         <div class="dialog_container">
             <button id="modale_closer" class="close_button">X</button>
-            <form  action="index.php?action=sendMessageWithAjax"
-                method="post">
+            <form action="index.php?action=sendMessageWithAjax" method="post">
                 <label for="message">Envoyer un message à <?= $user ? $user->getUsername() : null ?></label>
-                <textarea autofocus  name="message" id="message" cols="30" rows="10"></textarea>
+                <textarea autofocus name="message" id="message" cols="30" rows="10"></textarea>
                 <button type="dialog" data-idReceiver=<?= $user ? $user->getId() : null ?>
                     class="primary_button primary_button--full_width font-semibold">Confirmation</button>
             </form>

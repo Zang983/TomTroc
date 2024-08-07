@@ -12,8 +12,14 @@ class UserController
     {
         $bookManager = new BookManager();
         $library = $bookManager->getBooksByUser($_SESSION['user']->getId());
+        $library = array_map(function ($book) {
+            $book->secureForDisplay();
+            return $book;
+        }, $library);
+        $user = $_SESSION['user'];
+        $user->secureForDisplay();
         $view = new View("Modification de votre profil");
-        $view->render("userProfile", ['user' => $_SESSION['user'], 'library' => $library]);
+        $view->render("userProfile", ['user' => $user, 'library' => $library]);
     }
     public function showPublicProfile(): void
     {
@@ -27,6 +33,11 @@ class UserController
         }
         $bookManager = new BookManager();
         $library = $bookManager->getBooksByUser($user->getId());
+        $user->secureForDisplay();
+        $library = array_map(function ($library) {
+            $library->secureForDisplay();
+            return $library;
+        }, $library);
         $view = new View("Profil public de " . $user->getUsername());
         $view->render("userProfile", ['user' => $user, 'library' => $library]);
     }
@@ -46,7 +57,7 @@ class UserController
                 ['value' => $_POST['password'], 'type' => 'text']
             ])
         )
-            throw new Exception("Tous les champs ne sont pas remplis");
+            throw new Exception("Tous les champs ne sont pas remplis comme il faut.");
 
         $userManager = new UserManager();
         $_SESSION['user'] = $userManager->createUser($_POST['username'], $_POST['email'], password_hash($_POST['password'], PASSWORD_DEFAULT));
@@ -65,15 +76,15 @@ class UserController
         $newPassword = $_POST['password'] ?? null;
 
         $haveNewData = false;
-        if (Utils::checkInput(['value'=>$newUsername,'type'=>'username']) && $newUsername !== $user->getUsername()) {
+        if (Utils::checkInput(['value' => $newUsername, 'type' => 'username']) && $newUsername !== $user->getUsername()) {
             $haveNewData = true;
             $user->setUsername($_POST['username']);
         }
-        if (Utils::checkInput(['value'=>$newEmail,'type'=>'email']) && $newEmail !== $user->getEmail()) {
+        if (Utils::checkInput(['value' => $newEmail, 'type' => 'email']) && $newEmail !== $user->getEmail()) {
             $haveNewData = true;
             $user->setEmail($_POST['email']);
         }
-        if ($newPassword && Utils::checkInput(['value'=>$newPassword,'type'=>'password'])) {
+        if ($newPassword && Utils::checkInput(['value' => $newPassword, 'type' => 'password'])) {
             $haveNewData = true;
             $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
         }
