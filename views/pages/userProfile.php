@@ -1,10 +1,10 @@
 <?php
 $ownerAccount = $_GET['action'] === 'myProfile';// Check if it's the owner account if we want to display all informations with both routes (myProfile && profile), actually it's not the case.
 ?>
-<section class="profile<?= !$ownerAccount ? ' profile--public' : '' ?>">
+<div class="profile<?= !$ownerAccount ? ' profile--public' : '' ?>">
     <?= $ownerAccount ? "<h1 class='playfair-font'>Mon compte</h1>" : "" ?>
     <section class="account_detail<?= !$ownerAccount ? ' account_detail--smaller' : '' ?>">
-        <div>
+        <div class="account_detail--fullContainer">
             <img src=<?= $user ? Utils::filepath($user->getAvatar(), true) : null ?> alt="avatar" class="avatar"
                 height="135" width="135">
             <?php
@@ -14,8 +14,7 @@ $ownerAccount = $_GET['action'] === 'myProfile';// Check if it's the owner accou
                 <?php
             }
             ?>
-
-            <hr />
+            <?= $ownerAccount ? '<hr>' : null ?>
             <h2 class="playfair-font"><?= $user->getUsername() ?></h2>
             <p class="registration_duration">Membre depuis :
                 <?= Utils::getRegistrationDuration($user->getCreatedAt()) ?>
@@ -40,14 +39,13 @@ $ownerAccount = $_GET['action'] === 'myProfile';// Check if it's the owner accou
                 <dialog>
                     <div class="dialog_container">
                         <button id="modale_closer">X</button>
-                        <form action="index.php?action=sendMessageWithAjax" method="post">
+                        <form action="index.php?action=sendMessageWithAjax" method="dialog">
                             <label for="message">Envoyer un message à <?= $user ? $user->getUsername() : null ?></label>
                             <textarea autofocus name="message" id="message" cols="30" rows="10"></textarea>
-                            <button type="dialog" data-idReceiver=<?= $user ? $user->getId() : null ?>
+                            <button type="submit" data-idReceiver=<?= $user ? $user->getId() : null ?>
                                 class="primary_button primary_button--full_width font-semibold">Confirmation</button>
                         </form>
                     </div>
-                    </p>
                 </dialog>
                 <?php
             } ?>
@@ -77,16 +75,21 @@ $ownerAccount = $_GET['action'] === 'myProfile';// Check if it's the owner accou
             <?php
         } ?>
     </section>
-    <div class="account_librairy<?= !$ownerAccount ? ' account_librairy--smaller' : '' ?>">
+    <div class="account_librairy<?= !$ownerAccount ? ' smaller' : '' ?>">
         <div class="account_librairy_titles">
             <div class="account_librairy_titles--firstCol font-semibold">Photo</div>
             <div class="account_librairy_titles--title font-semibold">Titre</div>
             <div class="account_librairy_titles--author font-semibold">Auteur</div>
             <div class="account_librairy_titles--description font-semibold">Description</div>
-            <div class="account_librairy_titles--availability font-semibold">Disponibilité</div>
-            <div class="account_librairy_titles--lastCol font-semibold">Action
+            <div
+                class="account_librairy_titles--availability <?= $ownerAccount ? "account_librairy_titles--lastCol" : null ?> font-semibold">
+                Disponibilité</div>
+            <?php if ($ownerAccount): ?>
+                <div class="account_librairy_titles--lastCol font-semibold">Action
+                </div>
                 <a href="index.php?action=newBookForm">+</a>
-            </div>
+            <?php endif; ?>
+
         </div>
 
         <?php
@@ -104,17 +107,25 @@ $ownerAccount = $_GET['action'] === 'myProfile';// Check if it's the owner accou
                             <?= $entry->getAvailability() ? "Disponible" : "Non dispo." ?>
                         </div>
                     </div>
-                    <div class="account_librairy_entry--lastCol account_librairy_entry--action">
-                        <a href="index.php?action=editBookForm&id=<?= $entry->getId() ?>">Éditer</a>
-                        <a href="index.php?action=deleteBook&id=<?= $entry->getId() ?>">Supprimer</a>
-                    </div>
+                    <?php if ($ownerAccount): ?>
+                        <div class="account_librairy_entry--lastCol account_librairy_entry--action">
+                            <a href="index.php?action=editBookForm&id=<?= $entry->getId() ?>">Éditer</a>
+                            <a href="index.php?action=deleteBook&id=<?= $entry->getId() ?>">Supprimer</a>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
             <?php endforeach;
+            ?>
+        </div>
+        <?php
+
+        } else {
+            if ($ownerAccount)
+                echo '<div class="noBooks">Vous n\'avez pas encore ajouté de livre à votre bibliothèque.</div>';
+            else
+                echo '<div class="noBooks">L\'utilisateur n\'a pas encore ajouté de livre à sa bibliothèque.</div>';
+
         }
-        else
-        echo '<div class="noBooks">Vous n\'avez pas encore ajouté de livre à votre bibliothèque.</div>';
         ?>
-
-
-</section>
+</div>

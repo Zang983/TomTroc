@@ -168,10 +168,7 @@ Components & utils
 .font-bold{
     font-weight:bold;
 }
-section{
-    display:flex;
-    flex-direction: column;
-}
+
 .underline
 {
     text-decoration: underline;
@@ -330,6 +327,8 @@ Page market
 Page profile
 */
 .profile{
+    display:flex;
+    flex-direction: column;
     background-color: var(--secondary-bg-color);
     padding:90px 155px;
     flex:1;
@@ -337,8 +336,6 @@ Page profile
 
 .profile.profile--public{
     flex-direction: row;
-    flex-wrap:wrap;
-    align-content:flex-start;
     flex:1;
     gap:35px;
     row-gap:0;
@@ -366,7 +363,7 @@ font-size:24px;
 }
 .account_detail div, .edit_profile_form{
     border-radius: 20px;
-    padding-top:37px;
+    padding-top:21px;
     background-color: white;
     display:flex;
     flex-direction: column;
@@ -384,14 +381,22 @@ font-size:8px;
     object-fit: cover;
     border-radius: 100%;
 }
+.account_detail--smaller .avatar{
+    margin-bottom:118px;
+}
+.account_detail h2{
+    margin-bottom:11px;
+
+}
 .account_detail label{
     color:var(--primary-gray);
     cursor: pointer;
     font-size:14px;
 }
 .account_detail--smaller{
-    width:30%;
+    flex:1;
     margin-top:0;
+    height:fit-content;
 }
 .account_librairy{
     margin-top:32px;
@@ -400,6 +405,21 @@ font-size:8px;
     flex-direction: column;
     background-color: white;
     border-radius: 20px;
+}
+.smaller.account_librairy{
+    max-width:771px;
+    margin-top:0;
+    height:fit-content;
+}
+.account_detail--smaller .account_detail--fullContainer{
+    width:100%;
+    padding:48px 63px 56px 63px;
+}
+.account_detail--smaller .primary_button--full_width{
+    height:63px;
+    margin:0;
+    padding:0;
+    margin-top:45px;
 }
 .noBooks{
     font-size:18px;
@@ -418,18 +438,38 @@ font-size:8px;
     text-transform: uppercase;
     padding-bottom:7px;
 }
+.smaller .account_librairy_titles{
+    flex:none;
+}
 .account_librairy_titles--firstCol,.account_librairy_entry--firstCol{
     padding-left:66px;
     width:19.65%;
 }
+.smaller .account_librairy_titles--firstCol,.smaller .account_librairy_entry--firstCol{
+    padding-left:66px;
+    width:29.05%;
+}
 .account_librairy_titles--title,.account_librairy_entry--title{
     width:15.88%;
 }
+.smaller .account_librairy_titles--title,.smaller .account_librairy_entry--title{
+    width:15.88%;
+}
 .account_librairy_titles--author,.account_librairy_entry--author{
-    width:15.35%;
+    width:23.47%;
+}
+.smaller .account_librairy_titles--author,.smaller .account_librairy_entry--author{
+    width:22.6978%;
 }
 .account_librairy_titles--description,.account_librairy_entry--description{
     width:18.25%;
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right:25px;
+}
+.smaller .account_librairy_titles--description,.smaller .account_librairy_entry--description{
+    width:24.773%;
     white-space:nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -465,6 +505,10 @@ font-size:8px;
 background-color: #6DC5A1;
 }
 .account_librairy_titles--lastCol,.account_librairy_entry--lastCol{
+    padding-right:80px;
+    width:17.63%;
+}
+.smaller .account_librairy_titles--lastCol,.smaller .account_librairy_entry--lastCol{
     padding-right:80px;
     width:17.63%;
 }
