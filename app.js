@@ -31,7 +31,7 @@ if (action === 'market') {
 if (action === 'detailBook' || action === "profile") {
     const dialog = document.querySelector('dialog')
     const modaleOpenerBtn = document.querySelector('button')
-    const closeBtn = document.querySelector('.close_button')
+    const closeBtn = document.querySelector('#modale_closer')
 
     const linkHaveToHide = document.querySelector('a.primary_button,a.secondary_button')
     if (linkHaveToHide)
