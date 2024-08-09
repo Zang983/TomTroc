@@ -41,7 +41,7 @@
                             '<img src=' . Utils::filepath($messageReceiver->getAvatar(), true) . ' alt="avatar">'
                             :
                             null ?>
-                        <?= Utils::formatTimestamp($message->getCreatedAt()) ?>
+                        <?= Utils::formatTimestamp($message->getCreatedAt(),true) ?>
                     </h5>
                     <p><?= $message->getContent() ?></p>
                 </div>

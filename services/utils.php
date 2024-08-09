@@ -122,7 +122,7 @@ class Utils
     {
         return htmlspecialchars($input);
     }
-    public static function formatTimestamp($timestamp)
+    public static function formatTimestamp(string $timestamp, bool $fullFormat = false): string
     {
         // Convertir le timestamp en objet DateTime
         $date = new DateTime($timestamp);
@@ -130,7 +130,10 @@ class Utils
 
         // Calculer la différence entre maintenant et la date du timestamp
         $interval = $now->diff($date);
-
+        if ($fullFormat) {
+            // Retourner la date et l'heure au format jj.mm hh:mm
+            return $date->format('d.m H:i');
+        }
         // Vérifier si la différence est inférieure à 24 heures
         if ($interval->days < 1) {
             // Retourner l'heure au format hh:mm

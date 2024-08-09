@@ -893,6 +893,7 @@ margin-bottom:27px;
 }
 .chatlist--item figcaption{
     display:flex;
+    width:100%;
     gap:7px;
     flex-direction: column;
     overflow: hidden;
@@ -946,7 +947,8 @@ margin-bottom:27px;
 #chat form{
     display:flex;
     gap:21px;
-
+    margin-top:63px;
+    margin-bottom:54px;
 }
 #chat input{
     flex: 1;

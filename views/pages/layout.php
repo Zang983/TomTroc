@@ -46,8 +46,8 @@ $action = isset($_GET['action']) ? $_GET['action'] : null;
                 } else {
                     ?>
                     <div>
-                        <a href="index.php?action=connexion">Connexion</a>
-                        <a href="index.php?action=inscription">Inscription</a>
+                        <a href="index.php?action=connexion" <?= ($action === 'connexion') ? 'class="font-semibold"' : null ?>>Connexion</a>
+                        <a href="index.php?action=inscription" <?= ($action === 'inscription') ? 'class="font-semibold"' : null ?>>Inscription</a>
                     </div>
                     <?php
                 }
