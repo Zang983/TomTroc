@@ -2,7 +2,7 @@
     <section id="chatList">
         <h2>Messagerie</h2>
         <?php
-        if(!empty($conversationsList)){
+        if (!empty($conversationsList)) {
             foreach ($conversationsList as $entry) {
                 $conversation = $entry['conversation'];
                 $receiver = $entry['receiver'];
@@ -25,8 +25,8 @@
         }
         ?>
     </section>
-    <section id="chat">
-        <?php if (!empty($messages) || $messageReceiver ) { ?>
+    <div id="chat">
+        <?php if (!empty($messages) || $messageReceiver) { ?>
             <h3 class="font-semibold">
                 <img src=<?= Utils::filepath($messageReceiver->getAvatar(), true) ?> alt="avatar">
                 <?= $messageReceiver->getUsername() ?>
@@ -52,11 +52,12 @@
                 <input placeholder="Tapez votre message ici" type="text" name="message" id="message">
                 <button type="submit" data-idReceiver="<?= $messageReceiver->getId() ?>"
                     class="primary_button font-semibold">Envoyer</button>
-                <?php
+            </form>
+            <?php
         } else {
             echo "<h2>Sélectionnez une conversation !</h2>";
         }
         ?>
-    </section>
+    </div>
 
 </div>

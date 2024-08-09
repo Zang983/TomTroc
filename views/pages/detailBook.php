@@ -34,13 +34,12 @@
         <div class="dialog_container">
             <button id="modale_closer" class="close_button">X</button>
             <form  action="index.php?action=sendMessageWithAjax"
-                method="post">
+                method="dialog">
                 <label for="message">Envoyer un message à <?= $user ? $user->getUsername() : null ?></label>
                 <textarea autofocus  name="message" id="message" cols="30" rows="10"></textarea>
-                <button type="dialog" data-idReceiver=<?= $user ? $user->getId() : null ?>
+                <button data-idReceiver=<?= $user ? $user->getId() : null ?>
                     class="primary_button primary_button--full_width font-semibold">Confirmation</button>
             </form>
         </div>
-        </p>
     </dialog>
 </section>
