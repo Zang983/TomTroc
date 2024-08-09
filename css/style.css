@@ -372,27 +372,75 @@ font-size:8px;
     width:30%;
     margin-top:0;
 }
-.account_librairy--smaller{
-    flex:1;
-}
 .account_librairy{
     margin-top:32px;
-    /* padding-left:66px;
-    padding-right:80px; */
+    width:100%;
+    display:flex;
+    flex-direction: column;
     background-color: white;
     border-radius: 20px;
 }
-.account_librairy table tr{
-    max-height:130px;
-    height:130px;
-    background-color:red;
-    padding:0 25px;
+.account_librairy_titles{
+    position:relative;
+    flex:1;
+    display:flex;
+    padding-top:34px;
+    border-bottom:1px solid var(--primary-bg-color);
 }
-.account_librairy table td div{
+.account_librairy_titles--firstCol,.account_librairy_entry--firstCol{
+    padding-left:66px;
+    width:19.65%;
+}
+.account_librairy_titles--title,.account_librairy_entry--title{
+    width:15.88%;
+}
+.account_librairy_titles--author,.account_librairy_entry--author{
+    width:15.35%;
+}
+.account_librairy_titles--description,.account_librairy_entry--description{
+    width:18.25%;
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.account_librairy_titles--availability,.account_librairy_entry--availability{
+    width:13.25%;
+}
+.account_librairy_titles--lastCol,.account_librairy_entry--lastCol{
+    padding-right:80px;
+    width:17.63%;
+}
+.account_librairy_titles--lastCol a{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width:20px;
+    height:20px;
+    border:1px solid blue;
+    border-radius:100%;
+    position:absolute;
+    top:10px;
+    right:15px;
+}
+.account_librairy_entry--lastCol {
+display:flex;
+gap:28px;
+}
+
+
+.account_librairy_entry img{
+width :78px;
+height:78px;
+}
+.account_librairy_entry{
     max-height:130px;
     height:130px;
     overflow: hidden;
+    display:flex;
+    align-items: center;
 }
+
+
 .edit_profile_form{
     display:flex;
     flex-direction: column;

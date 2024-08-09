@@ -115,7 +115,7 @@ try {
         //Equivalent PHP
         case 'openChat':
             $messageController = new ConversationController();
-            $messageController->openChat();
+            $messageController->showMailBox();
             break;
         default:
             throw new Exception("La page demandée n'existe pas.");

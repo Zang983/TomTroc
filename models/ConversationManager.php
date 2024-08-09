@@ -32,11 +32,11 @@ class ConversationManager
                 $rawData["idUser"],
 
             );
-            $conversations[] = ['conversation'=>$conversation, 'receiver'=>$receiver];  
+            $conversations[] = ['conversation' => $conversation, 'receiver' => $receiver];
         }
         return $conversations;
     }
-    public function getConversationByUsers($sessionUser, $userId): Conversation|int
+    public function getConversationByUsers(User $sessionUser, int $userId): Conversation|null
     {
         $rawDatas = $this->db->executeRequest('SELECT * FROM conversations WHERE (idUser_1 = ? AND idUser_2 = ?) OR (idUser_1 = ? AND idUser_2 = ?)', [$sessionUser->getId(), $userId, $userId, $sessionUser->getId()]);
         if ($rawDatas)
@@ -49,12 +49,13 @@ class ConversationManager
                 $rawDatas[0]["lastOpeningUser2"],
                 $rawDatas[0]["idConversation"],
             );
-        return -1;
+        return null;
     }
-    public function createConversation(Conversation $conversation)
+    public function createConversation(Conversation $conversation):Conversation
     {
         $this->db->executeRequest('INSERT INTO conversations (idUser_1, idUser_2,contentLastMessage,timestampLastMessage) VALUES (?, ?,?,?)', [$conversation->getIdUser1(), $conversation->getIdUser2(), $conversation->getContentLastMessage(), $conversation->getTimestampLastMessage()]);
         $conversation->setId($this->db->lastId());
+        return $conversation;
     }
     public function updateConversation(Conversation $conversation)
     {
@@ -67,5 +68,21 @@ class ConversationManager
             return $row['UnreadMessage'];
         }
 
+    }
+    public function getConversationById(int $id, User $user): ?Conversation
+    {
+        $idUser = $user->getId();
+        $rawDatas = $this->db->executeRequest('SELECT * FROM conversations WHERE idConversation = ? AND (idUser_1 = ? OR idUser_2 = ?)', [$id, $idUser, $idUser]);
+        if (isset($rawDatas[0]))
+            return new Conversation(
+                $rawDatas[0]["idUser_1"],
+                $rawDatas[0]["idUser_2"],
+                $rawDatas[0]["contentLastMessage"],
+                $rawDatas[0]["timestampLastMessage"],
+                $rawDatas[0]["lastOpeningUser1"],
+                $rawDatas[0]["lastOpeningUser2"],
+                $rawDatas[0]["idConversation"]
+            );
+        return null;
     }
 }

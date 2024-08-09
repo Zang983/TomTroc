@@ -17,7 +17,9 @@ $ownerAccount = $_GET['action'] === 'myProfile';// Check if it's the owner accou
 
             <hr />
             <h2 class="playfair-font"><?= $user->getUsername() ?></h2>
-            <p class="registration_duration">Membre depuis : <?= Utils::getRegistrationDuration($user->getCreatedAt()) ?></p>
+            <p class="registration_duration">Membre depuis :
+                <?= Utils::getRegistrationDuration($user->getCreatedAt()) ?>
+            </p>
             <div class="librairy_count">
                 <h3 class="font-semibold">Bibliothèque</h3>
                 <p>
@@ -31,7 +33,8 @@ $ownerAccount = $_GET['action'] === 'myProfile';// Check if it's the owner accou
                     class="secondary_button font-semibold primary_button--full_width font-semibold">
                     Écrire un message
                 </a>
-                <button id="modale_opener" class="hidden secondary_button font-semibold primary_button--full_width font-semibold">
+                <button id="modale_opener"
+                    class="hidden secondary_button font-semibold primary_button--full_width font-semibold">
                     Écrire un message
                 </button>
                 <dialog>
@@ -74,39 +77,38 @@ $ownerAccount = $_GET['action'] === 'myProfile';// Check if it's the owner accou
             <?php
         } ?>
     </section>
-    <section class="account_librairy<?= !$ownerAccount ? ' account_librairy--smaller' : '' ?>">
-        <a href="index.php?action=newBookForm">Ajouter un livre.</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>Photo</th>
-                    <th>Titre</th>
-                    <th>Auteur</th>
-                    <th>Description</th>
-                    <th>Disponibilité</th>
-                    <?php if ($ownerAccount) { ?>
-                        <th>Action</th>
-                    <?php } ?>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($library as $book) { ?>
-                    <tr>
-                        <td><img src=<?= $book ? Utils::filepath($book->getFilename()) : null ?> alt="book cover" width="78" height="78"></td>
-                        <td><?= $book->getTitle() ?></td>
-                        <td><?= $book->getAuthor() ?></td>
-                        <td><div><?= $book->getDescription() ?></div></td>
-                        <td><?= $book->getAvailability() ? 'Disponible' : 'Indisponible' ?></td>
-                        <?php if ($ownerAccount) { ?>
-                            <td>
-                                <a href="index.php?action=deleteBook&id=<?= $book->getId() ?>">Supprimer</a>
-                                <a href="index.php?action=editBookForm&id=<?= $book->getId() ?>">Éditer</a>
-                            </td>
-                        <?php } ?>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-
-    </section>
+    <div class="account_librairy<?= !$ownerAccount ? ' account_librairy--smaller' : '' ?>">
+        <div class="account_librairy_titles">
+            <div class="account_librairy_titles--firstCol">Photo</div>
+            <div class="account_librairy_titles--title">Titre</div>
+            <div  class="account_librairy_titles--author">Auteur</div>
+            <div  class="account_librairy_titles--description">Description</div>
+            <div  class="account_librairy_titles--availability">Disponibilité</div>
+            <div class="account_librairy_titles--lastCol">Action
+                <!-- <a href="index.php?action=newBookForm">+</a> -->
+            </div>
+        </div>
+        <div class="account_librairy_entry">
+            <div class="account_librairy_entry--firstCol"><img src="./uploads/books/1722268727_test_image2.webp"
+                    alt="Couverture du livre" width="78" height="78"></div>
+            <div class="account_librairy_entry--title">Titre</div>
+            <div class="account_librairy_entry--author">Jules Vernes</div>
+            <div class="account_librairy_entry--description">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquam, consequuntur, est eos laborum
+                consectetur aliquid deserunt adipisci atque saepe libero nemo assumenda placeat perspiciatis fuga in
+                fugiat ab consequatur corporis!
+                Doloremque sint minus excepturi harum iste. Iste ipsa quo magnam, reprehenderit illo natus incidunt.
+                Sint vitae nihil quasi totam voluptates sed, ullam optio? Fugit tempore qui, aliquam neque natus
+                doloribus.
+                Perferendis, assumenda? Cum numquam reprehenderit sed expedita adipisci itaque dicta rerum voluptatibus
+                dolorem placeat quisquam, nesciunt debitis omnis distinctio sint dolorum libero vel maiores fugit. Sint
+                eaque fugit itaque obcaecati.
+                Incidunt illum tenetur ipsa molestiae delectus, voluptas iste ut minima officia repellendus quasi, iusto
+                vitae consequatur sunt reiciendis aliquam deserunt ipsum accusantium obcaecati voluptates. Similique
+                sunt porro voluptatibus tempora iusto!</div>
+            <div class="account_librairy_entry--availability">Disponible</div>
+            <div class="account_librairy_entry--lastCol account_librairy_entry--action">
+            <a href="index.php?action=editBookForm&id=1">Éditer</a>
+                <a href="index.php?action=deleteBook&id=1">Supprimer</a>
+            </div>
+        </div>
 </section>
