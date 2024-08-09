@@ -79,36 +79,42 @@ $ownerAccount = $_GET['action'] === 'myProfile';// Check if it's the owner accou
     </section>
     <div class="account_librairy<?= !$ownerAccount ? ' account_librairy--smaller' : '' ?>">
         <div class="account_librairy_titles">
-            <div class="account_librairy_titles--firstCol">Photo</div>
-            <div class="account_librairy_titles--title">Titre</div>
-            <div  class="account_librairy_titles--author">Auteur</div>
-            <div  class="account_librairy_titles--description">Description</div>
-            <div  class="account_librairy_titles--availability">Disponibilité</div>
-            <div class="account_librairy_titles--lastCol">Action
-                <!-- <a href="index.php?action=newBookForm">+</a> -->
+            <div class="account_librairy_titles--firstCol font-semibold">Photo</div>
+            <div class="account_librairy_titles--title font-semibold">Titre</div>
+            <div class="account_librairy_titles--author font-semibold">Auteur</div>
+            <div class="account_librairy_titles--description font-semibold">Description</div>
+            <div class="account_librairy_titles--availability font-semibold">Disponibilité</div>
+            <div class="account_librairy_titles--lastCol font-semibold">Action
+                <a href="index.php?action=newBookForm">+</a>
             </div>
         </div>
-        <div class="account_librairy_entry">
-            <div class="account_librairy_entry--firstCol"><img src="./uploads/books/1722268727_test_image2.webp"
-                    alt="Couverture du livre" width="78" height="78"></div>
-            <div class="account_librairy_entry--title">Titre</div>
-            <div class="account_librairy_entry--author">Jules Vernes</div>
-            <div class="account_librairy_entry--description">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquam, consequuntur, est eos laborum
-                consectetur aliquid deserunt adipisci atque saepe libero nemo assumenda placeat perspiciatis fuga in
-                fugiat ab consequatur corporis!
-                Doloremque sint minus excepturi harum iste. Iste ipsa quo magnam, reprehenderit illo natus incidunt.
-                Sint vitae nihil quasi totam voluptates sed, ullam optio? Fugit tempore qui, aliquam neque natus
-                doloribus.
-                Perferendis, assumenda? Cum numquam reprehenderit sed expedita adipisci itaque dicta rerum voluptatibus
-                dolorem placeat quisquam, nesciunt debitis omnis distinctio sint dolorum libero vel maiores fugit. Sint
-                eaque fugit itaque obcaecati.
-                Incidunt illum tenetur ipsa molestiae delectus, voluptas iste ut minima officia repellendus quasi, iusto
-                vitae consequatur sunt reiciendis aliquam deserunt ipsum accusantium obcaecati voluptates. Similique
-                sunt porro voluptatibus tempora iusto!</div>
-            <div class="account_librairy_entry--availability">Disponible</div>
-            <div class="account_librairy_entry--lastCol account_librairy_entry--action">
-            <a href="index.php?action=editBookForm&id=1">Éditer</a>
-                <a href="index.php?action=deleteBook&id=1">Supprimer</a>
-            </div>
-        </div>
+
+        <?php
+        if (count($library) > 0) {
+            foreach ($library as $entry):
+                ?>
+                <div class="account_librairy_entry">
+                    <div class="account_librairy_entry--firstCol"><img src="<?= Utils::filepath($entry->getFilename()) ?>"
+                            alt="Couverture du livre" width="78" height="78"></div>
+                    <div class="account_librairy_entry--title"><?= $entry->getTitle() ?></div>
+                    <div class="account_librairy_entry--author"><?= $entry->getAuthor() ?></div>
+                    <div class="account_librairy_entry--description"><?= $entry->getDescription() ?></div>
+                    <div class="account_librairy_entry--availability">
+                        <div class="<?= $entry->getAvailability() ? "available" : null ?>">
+                            <?= $entry->getAvailability() ? "Disponible" : "Non dispo." ?>
+                        </div>
+                    </div>
+                    <div class="account_librairy_entry--lastCol account_librairy_entry--action">
+                        <a href="index.php?action=editBookForm&id=<?= $entry->getId() ?>">Éditer</a>
+                        <a href="index.php?action=deleteBook&id=<?= $entry->getId() ?>">Supprimer</a>
+                    </div>
+                </div>
+
+            <?php endforeach;
+        }
+        else
+        echo '<div class="noBooks">Vous n\'avez pas encore ajouté de livre à votre bibliothèque.</div>';
+        ?>
+
+
 </section>

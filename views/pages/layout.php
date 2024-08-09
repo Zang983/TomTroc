@@ -24,17 +24,18 @@ $action = isset($_GET['action']) ? $_GET['action'] : null;
             <img src="./assets/logo.svg" alt="Logo TomTroc">
             <div>
                 <a href="index.php?action=home" <?= ($action === 'home' || $action === null) ? 'class="font-semibold"' : null ?>>Accueil</a>
-                <a href="index.php?action=market" <?= ($action === 'market') ? 'class="font-semibold"' : null ?>>Nos livres à l'échange</a>
+                <a href="index.php?action=market" <?= ($action === 'market') ? 'class="font-semibold"' : null ?>>Nos livres
+                    à l'échange</a>
             </div>
             <div class="headerMenu">
                 <?php
                 if (isset($_SESSION['user'])) {
                     ?>
                     <div>
-                        <a href="index.php?action=mailbox" <?= ($action === 'mailbox' || $action === 'openChat') ? 'class="font-semibold"' : null ?>>
+                        <a data-count="<?= $unreadMessageCount ?>" href="index.php?action=mailbox" <?= ($action === 'mailbox' || $action === 'openChat') ? 'class="font-semibold unreadCount"' : 'class="unreadCount"' ?>>
                             <img src="./assets/messagerie_icon.svg" alt="" width="15" height="13">
                             Messagerie
-                            <?= '(' . $unreadMessageCount . ')' ?></a>
+                        </a>
                         <a href="index.php?action=myProfile" <?= ($action === 'myProfile') ? 'class="font-semibold"' : null ?>>
                             <img src="./assets/my_account.svg" alt="" width="10" height="13">
                             Mon compte

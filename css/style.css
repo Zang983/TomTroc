@@ -52,6 +52,27 @@ header nav div {
     display:flex;
     gap:20px;
 }
+.unreadCount{
+    position:relative;
+}
+.unreadCount::after{
+    content:attr(data-count);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6.75px;
+    width:10.5px;
+    height:15px;
+    font-size:8px;
+    color:white;
+    background-color: #292929;
+    position:absolute;
+    font-weight:bold;
+    top:0;
+    right:0;
+    transform: translateX(120%) translateY(2px);
+
+}
 footer{
     height:60px;
     display:flex;
@@ -380,12 +401,22 @@ font-size:8px;
     background-color: white;
     border-radius: 20px;
 }
+.noBooks{
+    font-size:18px;
+    font-weight:bold;
+    width:100%;
+    text-align: center;
+    padding:15px;
+}
 .account_librairy_titles{
     position:relative;
     flex:1;
     display:flex;
     padding-top:34px;
     border-bottom:1px solid var(--primary-bg-color);
+    font-size:8px;
+    text-transform: uppercase;
+    padding-bottom:7px;
 }
 .account_librairy_titles--firstCol,.account_librairy_entry--firstCol{
     padding-left:66px;
@@ -402,9 +433,36 @@ font-size:8px;
     white-space:nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding-right:25px;
 }
 .account_librairy_titles--availability,.account_librairy_entry--availability{
     width:13.25%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.account_librairy_entry:not(.account_librairy_entry:last-of-type){
+    border-bottom:1px solid var(--primary-bg-color);
+}
+.account_librairy_entry:last-of-type{
+    border-radius:0 0 20px 20px;
+}
+.account_librairy_entry:nth-child(odd){
+    background-color: #EDF2F6;
+}
+.account_librairy_entry--availability div{
+    width:71.6px;
+    height:18.4px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #C56D6D;
+    border-radius:29.58px;
+    color:white;
+    font-size:8.8px;
+}
+.account_librairy_entry--availability .available{
+background-color: #6DC5A1;
 }
 .account_librairy_titles--lastCol,.account_librairy_entry--lastCol{
     padding-right:80px;
@@ -412,10 +470,11 @@ font-size:8px;
 }
 .account_librairy_titles--lastCol a{
     display:flex;
+    font-size:15px;
     justify-content: center;
     align-items: center;
-    width:20px;
-    height:20px;
+    width:25px;
+    height:25px;
     border:1px solid blue;
     border-radius:100%;
     position:absolute;
@@ -426,7 +485,19 @@ font-size:8px;
 display:flex;
 gap:28px;
 }
-
+.account_librairy_entry *{
+    font-size:12px;
+    font-weight: normal;
+}
+.account_librairy_entry--description{
+    font-style: italic;
+}
+.edit_link,.delete_link{
+    text-decoration: underline;
+}
+.account_librairy_entry .delete_link{
+    color:#CB2D2D;
+}
 
 .account_librairy_entry img{
 width :78px;
@@ -439,8 +510,6 @@ height:78px;
     display:flex;
     align-items: center;
 }
-
-
 .edit_profile_form{
     display:flex;
     flex-direction: column;

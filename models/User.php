@@ -52,8 +52,9 @@ class User {
         return $this->createdAt;
     }
     public function secureForDisplay():void{
-        $this->username = htmlspecialchars($this->username, ENT_QUOTES,"UTF-8");
-        $this->avatar = htmlspecialchars($this->avatar, ENT_QUOTES,"UTF-8");
+        //User is in session storage, so we need to secure it only once. V1 use htmlspecialchars_decode to avoid double encoding
+        $this->username = htmlspecialchars(htmlspecialchars_decode($this->username, ENT_QUOTES), ENT_QUOTES,"UTF-8");
+        $this->avatar = htmlspecialchars(htmlspecialchars_decode($this->avatar, ENT_QUOTES), ENT_QUOTES,"UTF-8");
     }
 
 }

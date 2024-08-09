@@ -7,10 +7,6 @@ class ConversationController
     {
         $conversationManager = new ConversationManager();
         $conversationsList = $conversationManager->getAllConversations($_SESSION['user']);
-        $conversationsList = array_map(function ($conversation) {
-            $conversation['conversation']->secureForDisplay();
-            return $conversation;
-        }, $conversationsList);
         return $conversationsList;
     }
     private function getConversationById(int $id): ?Conversation
@@ -102,6 +98,14 @@ class ConversationController
             $this->saveConversation($conversation);
             $messages = $this->getMessagesByConversation($conversation);
         }
+        $conversationList = array_map(function ($conversation) {
+            $conversation['conversation']->secureForDisplay();
+            return $conversation;
+        }, $conversationList);
+        $messages = array_map(function ($message) {
+            $message->secureForDisplay();
+            return $message;
+        }, $messages);
         $view = new View('Votre messagerie');
         $view->render('mailBox', ['conversationsList' => $conversationList, 'messages' => $messages, 'messageReceiver' => $messageReceiver]);
     }
