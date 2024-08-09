@@ -4,6 +4,15 @@
  */
 class Utils
 {
+    public static function checkDirectoriesAndCreate()
+    {
+        if (!file_exists(UPLOAD_AVATAR_DIR)) {
+            mkdir(UPLOAD_AVATAR_DIR, 0777, true);
+        }
+        if (!file_exists(UPLOAD_BOOK_DIR)) {
+            mkdir(UPLOAD_BOOK_DIR, 0777, true);
+        }
+    }
     /**
      * This method upload a file to the server
      * @param array $file
@@ -14,7 +23,7 @@ class Utils
     {
         $file = $file['file'];
         $target_dir = $isAvatar ? UPLOAD_AVATAR_DIR : UPLOAD_BOOK_DIR;
-
+        Utils::checkDirectoriesAndCreate();
         if (!$file['error']) {
             $filename = time() . "_" . htmlspecialchars(basename($file['name']));
             $target_file = $target_dir . $filename;
@@ -161,11 +170,11 @@ class Utils
         // Check if the date is before today
         return $date->format('d.m');
     }
-    public static function truncate(string $text, int $length=20): string
+    public static function truncate(string $text, int $length = 20): string
     {
         if (strlen($text) > $length)
             return substr($text, 0, $length) . "...";
-        
+
         return $text;
     }
 
