@@ -20,7 +20,6 @@ $actions = [//Liste des actions possibles nécessitant d'être connecté.
     'mailbox',
     'updateBook',
     'sendMessage',
-    'openChat'
 ];
 // Try catch global pour gérer les erreurs
 try {
@@ -49,7 +48,7 @@ try {
             break;
         case 'inscription':
             $userController = new UserController();
-            $userController->showInscriptionForm();
+            $userController->inscription();
             break;
         case 'connectUser':
             $userController = new UserController();
@@ -111,11 +110,6 @@ try {
         case 'sendMessage':
             $messageController = new ConversationController();
             $messageController->sendMessage();
-            break;
-        //Equivalent PHP
-        case 'openChat':
-            $messageController = new ConversationController();
-            $messageController->showMailBox();
             break;
         default:
             throw new Exception("La page demandée n'existe pas.");

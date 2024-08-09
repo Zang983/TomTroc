@@ -2,10 +2,15 @@
 
 class UserController
 {
-    /* Display methods */
-    public function showInscriptionForm(): void
+    /* Displays methods below retrieve the data, perform basic checks, secure the display of data against XSS vulnerabilities, and call the relevant view.*/
+    public function inscription(): void
     {
         $view = new View("Inscription");
+        $view->render("logForm");
+    }
+    public function connexion(): void
+    {
+        $view = new View("Connexion");
         $view->render("logForm");
     }
     public function userProfile(): void
@@ -41,13 +46,9 @@ class UserController
         $view = new View("Profil public de " . $user->getUsername());
         $view->render("userProfile", ['user' => $user, 'library' => $library]);
     }
-    public function connexion(): void
-    {
-        $view = new View("Connexion");
-        $view->render("logForm");
-    }
 
-    /* form processing methods */
+
+    /* form processing methods each methods perform basic checks before modify database. */
     public function createUser(): void
     {
         if (
@@ -65,10 +66,6 @@ class UserController
     }
     public function updateUser(): void
     {
-        /* If an user want to change his datas we check validity of them, check if it's news datas or new avatar. */
-        if (!isset($_SESSION['user'])) {
-            throw new Exception("Vous devez être connecté pour effectuer cette action");
-        }
         $userManager = new UserManager();
         $user = $_SESSION['user'];
         $newUsername = $_POST['username'] ?? null;

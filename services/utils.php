@@ -4,7 +4,12 @@
  */
 class Utils
 {
-
+    /**
+     * This method upload a file to the server
+     * @param array $file
+     * @param bool $isAvatar : if it's an avatar to change directory
+     * @return string|null
+     */
     public static function uploadFile(array $file, bool $isAvatar = false): string|null
     {
         $file = $file['file'];
@@ -18,6 +23,12 @@ class Utils
         }
         return null;
     }
+    /**
+     * // This method delete a file from the server
+     * @param string|null $filename
+     * @param bool $isAvatar
+     * @return void
+     */
     public static function deleteFile(string|null $filename, bool $isAvatar = false): void
     {
         if ($filename === "no-image.svg" || !$filename) {
@@ -78,6 +89,11 @@ class Utils
 
         return $filename == "no-image.svg" ? NO_IMAGE : "./uploads/books/" . $filename;
     }
+    /**
+     * // This method check if the input is valid, we can add more types or conditions
+     * @param array $input
+     * @return bool
+     */
     public static function checkInput(array $input): bool
     {
         $input['value'] = trim($input['value']);
@@ -122,25 +138,35 @@ class Utils
     {
         return htmlspecialchars($input);
     }
+    /**
+     * // This method format the timestamp to differents readables formats
+     * @param string $timestamp
+     * @param bool $fullFormat
+     * @return string
+     */
     public static function formatTimestamp(string $timestamp, bool $fullFormat = false): string
     {
-        // Convertir le timestamp en objet DateTime
         $date = new DateTime($timestamp);
         $now = new DateTime();
 
-        // Calculer la différence entre maintenant et la date du timestamp
+        // Calc difference between dates
         $interval = $now->diff($date);
         if ($fullFormat) {
-            // Retourner la date et l'heure au format jj.mm hh:mm
             return $date->format('d.m H:i');
         }
-        // Vérifier si la différence est inférieure à 24 heures
+        // Check if the date is today
         if ($interval->days < 1) {
-            // Retourner l'heure au format hh:mm
             return $date->format('H:i');
         }
-        // Retourner la date au format jj.mm
+        // Check if the date is before today
         return $date->format('d.m');
+    }
+    public static function truncate(string $text, int $length=20): string
+    {
+        if (strlen($text) > $length)
+            return substr($text, 0, $length) . "...";
+        
+        return $text;
     }
 
 }

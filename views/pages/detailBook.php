@@ -23,23 +23,27 @@
                 </div>
 
             </div>
-            <a href="index.php?action=openChat&idReceiver=<?= $user ? $user->getId() : null ?>"
-                class="primary_button primary_button--full_width font-semibold">Envoyer un message</a>
-            <button id="modale_opener" class="hidden primary_button primary_button--full_width font-semibold">Envoyer un
-                message</button>
-
+            <?php if (isset($_SESSION['user'])) {
+                ?>
+                <a href="index.php?action=mailbox&idReceiver=<?= $user ? $user->getId() : null ?>"
+                    class="primary_button primary_button--full_width font-semibold">Envoyer un message</a>
+                <button id="modale_opener" class="hidden primary_button primary_button--full_width font-semibold">Envoyer un
+                    message</button>
+                <dialog>
+                    <div class="dialog_container">
+                        <button id="modale_closer" class="close_button">X</button>
+                        <form action="index.php?action=sendMessageWithAjax" method="dialog">
+                            <label for="message">Envoyer un message à <?= $user ? $user->getUsername() : null ?></label>
+                            <textarea autofocus name="message" id="message" cols="30" rows="10"></textarea>
+                            <button data-idReceiver=<?= $user ? $user->getId() : null ?>
+                                class="primary_button primary_button--full_width font-semibold">Confirmation</button>
+                        </form>
+                    </div>
+                </dialog>
+                <?php
+            }
+            ?>
         </figcaption>
     </figure>
-    <dialog>
-        <div class="dialog_container">
-            <button id="modale_closer" class="close_button">X</button>
-            <form  action="index.php?action=sendMessageWithAjax"
-                method="dialog">
-                <label for="message">Envoyer un message à <?= $user ? $user->getUsername() : null ?></label>
-                <textarea autofocus  name="message" id="message" cols="30" rows="10"></textarea>
-                <button data-idReceiver=<?= $user ? $user->getId() : null ?>
-                    class="primary_button primary_button--full_width font-semibold">Confirmation</button>
-            </form>
-        </div>
-    </dialog>
+
 </section>

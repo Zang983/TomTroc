@@ -32,7 +32,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : null;
                 if (isset($_SESSION['user'])) {
                     ?>
                     <div>
-                        <a data-count="<?= $unreadMessageCount ?>" href="index.php?action=mailbox" <?= ($action === 'mailbox' || $action === 'openChat') ? 'class="font-semibold unreadCount"' : 'class="unreadCount"' ?>>
+                        <a data-count="<?= $unreadMessageCount ?>" href="index.php?action=mailbox" <?= ($action === 'mailbox') ? 'class="font-semibold unreadCount"' : 'class="unreadCount"' ?>>
                             <img src="./assets/messagerie_icon.svg" alt="" width="15" height="13">
                             Messagerie
                         </a>

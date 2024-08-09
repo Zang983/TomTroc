@@ -89,6 +89,11 @@ class BookManager
         }
         return new Book($rawDatas[0]['title'], $rawDatas[0]['description'], $rawDatas[0]['author'], $rawDatas[0]['availability'], $rawDatas[0]['imageFilename'], $rawDatas[0]['ownerId'], $rawDatas[0]['idBook']);
     }
+    /**
+     * // This method get all books from a user
+     * @param int $userId
+     * @return array with books datas
+     */
     public function getBooksByUser(int $userId): array
     {
         $rawBooks = $this->db->executeRequest('SELECT * FROM books WHERE OwnerId = ' . $userId);

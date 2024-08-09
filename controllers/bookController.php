@@ -3,7 +3,7 @@
 class BookController
 {
 
-    /* Display methods */
+    /* Displays methods below retrieve the data, perform basic checks, secure the display of data against XSS vulnerabilities, and call the relevant view.*/
     public function showHome(): void
     {
         $bookManager = new BookManager();
@@ -23,10 +23,10 @@ class BookController
     }
     public function showEditBookForm(): void
     {
-        $bookManager = new BookManager();
         if (!isset($_GET['id'])) {
             throw new Exception("Vous devez spécifier un livre à modifier");
         }
+        $bookManager = new BookManager();
         $book = $bookManager->getBookById($_GET['id']);
         if (!$book) {
             throw new Exception("Ce livre n'existe pas.");
@@ -66,7 +66,7 @@ class BookController
         $view->render("detailBook", ["book" => $book, "user" => $user]);
     }
 
-    /* form processing methods */
+    /* form processing methods each methods perform basic checks before modify database. */
     public function updateBook(): void
     {
         if (!isset($_GET['id'])) {
@@ -104,7 +104,6 @@ class BookController
         }
         Utils::redirect("myProfile");
     }
-
     public function createBook(): void
     {
         $filename = null;

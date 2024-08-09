@@ -2,6 +2,9 @@
 
 class ConversationController
 {
+    /*
+    Private methods are used to retrieve data from the database, create new objects, and update the database to simplify the code and make it more readable.
+    */ 
 
     private function getAllUserConversations(): array
     {
@@ -71,6 +74,12 @@ class ConversationController
         if (!$result)
             Utils::redirect('mailbox');
     }
+
+    /**
+     * This method is used to display the mailbox page.
+     * It retrieves all the conversations of the user, the messages of the selected conversation, and the user with whom the user is talking. And if conversation doesn't exist, it creates a new temporary one.
+     * @return void
+     */
     public function showMailBox()
     {
         $userId = $_SESSION['user']->getId();
@@ -88,7 +97,6 @@ class ConversationController
             $idReceiver = intval($_GET['idReceiver'], 10);
             $conversation = $this->getConversationByReceiver($idReceiver);
             $messageReceiver = $userManager->getUserById($idReceiver);
-            //S'il n'y a pas de conversation existante, on crée une conversation vide qu'on push dans conversationsList.
             if (!$conversation) {
                 $conversationList[] = ["conversation" => $this->createTempConversation($userId, $idReceiver), "receiver" => $userManager->getUserById($idReceiver)];
             }
@@ -109,6 +117,10 @@ class ConversationController
         $view = new View('Votre messagerie');
         $view->render('mailBox', ['conversationsList' => $conversationList, 'messages' => $messages, 'messageReceiver' => $messageReceiver]);
     }
+    /**
+     * This method is used to send a message. We can send a message from different pages, so we need to check if the message is empty, if the receiver exists, if the conversation exists, and if not, we create a new one.
+     * @return void
+     */
     public function sendMessage()
     {
         /* 

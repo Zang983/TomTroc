@@ -26,9 +26,9 @@ $ownerAccount = $_GET['action'] === 'myProfile';// Check if it's the owner accou
                     <?= count($library) ?> livres
                 </p>
             </div>
-            <?php if (!$ownerAccount) {
+            <?php if (!$ownerAccount && isset($_SESSION['user'])) {
                 ?>
-                <a href="index.php?action=openChat&idReceiver=<?= $user ? $user->getId() : null ?>"
+                <a href="index.php?action=mailbox&idReceiver=<?= $user ? $user->getId() : null ?>"
                     class="secondary_button font-semibold primary_button--full_width font-semibold">
                     Écrire un message
                 </a>
@@ -101,7 +101,7 @@ $ownerAccount = $_GET['action'] === 'myProfile';// Check if it's the owner accou
                             alt="Couverture du livre" width="78" height="78"></div>
                     <div class="account_librairy_entry--title"><?= $entry->getTitle() ?></div>
                     <div class="account_librairy_entry--author"><?= $entry->getAuthor() ?></div>
-                    <div class="account_librairy_entry--description"><?= $entry->getDescription() ?></div>
+                    <div class="account_librairy_entry--description" title="<?= Utils::truncate($entry->getDescription(),100) ?>"><?= $entry->getDescription() ?></div>
                     <div class="account_librairy_entry--availability">
                         <div class="<?= $entry->getAvailability() ? "available" : null ?>">
                             <?= $entry->getAvailability() ? "Disponible" : "Non dispo." ?>
@@ -109,8 +109,8 @@ $ownerAccount = $_GET['action'] === 'myProfile';// Check if it's the owner accou
                     </div>
                     <?php if ($ownerAccount): ?>
                         <div class="account_librairy_entry--lastCol account_librairy_entry--action">
-                            <a href="index.php?action=editBookForm&id=<?= $entry->getId() ?>">Éditer</a>
-                            <a href="index.php?action=deleteBook&id=<?= $entry->getId() ?>">Supprimer</a>
+                            <a href="index.php?action=editBookForm&id=<?= $entry->getId() ?>" class="edit_link">Éditer</a>
+                            <a href="index.php?action=deleteBook&id=<?= $entry->getId() ?>" class="delete_link">Supprimer</a>
                         </div>
                     <?php endif; ?>
                 </div>
