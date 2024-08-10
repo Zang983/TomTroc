@@ -26,8 +26,7 @@ if (action === 'market') {
     }
 }
 
-/* Page detail book */
-
+/* Modale d'envoie de message sur les pages detailBook & profile */
 if (action === 'detailBook' || action === "profile") {
     const dialog = document.querySelector('dialog')
     const modaleOpenerBtn = document.querySelector('button')
@@ -48,7 +47,7 @@ if (action === 'detailBook' || action === "profile") {
     })
 
     /* Envoi requête AJAX*/
-    const submitBtn = document.querySelector('button[type="dialog"]')
+    const submitBtn = document.querySelector('form .primary_button')
 
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault()

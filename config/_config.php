@@ -11,6 +11,6 @@
     define('MAIN_VIEW_PATH', TEMPLATE_VIEW_PATH . 'layout.php'); // Le chemin vers le template principal.
 
     define('DB_HOST', 'localhost');
-    define('DB_NAME', 'blog_forteroche');
+    define('DB_NAME', 'tomtroc');
     define('DB_USER', 'root');
     define('DB_PASS', '');
