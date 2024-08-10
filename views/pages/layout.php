@@ -1,5 +1,5 @@
 <?php
-$conversationController = new conversationController();
+$conversationController = new ConversationController();
 $unreadMessageCount = $conversationController->countUnreadMessage();
 $action = isset($_GET['action']) ? $_GET['action'] : null;
 ?>

@@ -29,15 +29,15 @@ try {
     switch ($action) {
         // Pages accessibles à tous.
         case 'home':
-            $bookController = new bookController();
+            $bookController = new BookController();
             $bookController->showHome();
             break;
         case 'market':
-            $bookController = new bookController();
+            $bookController = new BookController();
             $bookController->showMarket();
             break;
         case 'detailBook':
-            $bookController = new bookController();
+            $bookController = new BookController();
             $bookController->detailBook();
             break;
 
