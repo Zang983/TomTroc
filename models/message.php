@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 class Message
 {
@@ -48,7 +49,7 @@ class Message
 
     public function secureForDisplay():void
     {
-        $this->content = htmlspecialchars($this->content, ENT_QUOTES,"UTF-8");
+        $this->content !== null ? htmlspecialchars($this->content, ENT_QUOTES,"UTF-8") : null;
     }
 
 }

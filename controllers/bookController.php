@@ -16,7 +16,7 @@ class BookController
         $view = new View("Accueil");
         $view->render("home", ["datas" => $datas]);
     }
-    
+
     public function newBookForm(): void
     {
         $view = new View("Ajouter un livre");
@@ -29,7 +29,7 @@ class BookController
             throw new Exception("Vous devez spécifier un livre à modifier");
         }
         $bookManager = new BookManager();
-        $book = $bookManager->getBookById($_GET['id']);
+        $book = $bookManager->getBookById(intval($_GET['id'], 10));
         if (!$book) {
             throw new Exception("Ce livre n'existe pas.");
         }
@@ -58,7 +58,7 @@ class BookController
     public function detailBook(): void
     {
         $bookManager = new BookManager();
-        $datas = $bookManager->getBookById($_GET['idBook'], true);
+        $datas = $bookManager->getBookById(intval($_GET['idBook'], 10), true);
         if (!$datas) {
             throw new Exception("Ce livre n'existe pas.");
         }
@@ -73,11 +73,12 @@ class BookController
     /* form processing methods each methods perform basic checks before modify database. */
     public function updateBook(): void
     {
-        if (!isset($_GET['id'])) {
+        $bookId = intval($_GET['id'], 10) ?? null;
+        if (!isset($bookId)) {
             throw new Exception("Vous devez spécifier un livre à modifier");
         }
         $bookManager = new BookManager();
-        $actualDatas = $bookManager->getBookById($_GET['id']);
+        $actualDatas = $bookManager->getBookById($bookId);
         if (!$actualDatas) {
             throw new Exception("Ce livre n'existe pas.");
         }
@@ -97,13 +98,12 @@ class BookController
             throw new Exception("Le formulaire n'est pas valide.");
         }
         /* We check if datas are the same, or if we need to update database. */
-        if ($newTitle !== $actualDatas->getTitle() || $newDescription !== $actualDatas->getDescription() || $newAuthor !== $actualDatas->getAuthor() || $newAvailability !== $actualDatas->getAvailability()) {
-            $filename = $actualDatas->getFilename();
+        if ($newTitle !== $actualDatas->getTitle() || $newDescription !== $actualDatas->getDescription() || $newAuthor !== $actualDatas->getAuthor() || $newAvailability !== $actualDatas->getAvailability() || !empty($_FILES['file'])) {
             if (!empty($_FILES['file']['name'])) {
-                Utils::deleteFile($filename);
+                Utils::deleteFile($actualDatas->getFilename());
                 $filename = Utils::uploadFile($_FILES);
             }
-            $book = new Book($newTitle, $newDescription, $newAuthor, $newAvailability, $filename, $_SESSION['user']->getId(), $_GET['id']);
+            $book = new Book($newTitle, $newDescription, $newAuthor, $newAvailability, $filename, $_SESSION['user']->getId(), $bookId);
             $bookManager->updateBook($book);
         }
         Utils::redirect("myProfile");
@@ -136,8 +136,11 @@ class BookController
 
     public function deleteBook(): void
     {
+        $idBook = intval($_GET['id'], 10) ?? null;
         $bookManager = new BookManager();
-        $bookManager->deleteBookById($_GET['id'], $_SESSION['user']->getId());
+        $book = $bookManager->getBookById($idBook);
+        Utils::deleteFile($book->getFilename());
+        $bookManager->deleteBookById($idBook, $_SESSION['user']->getId());
         Utils::redirect('myProfile');
     }
 }

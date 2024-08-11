@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 class ConversationManager
 {
@@ -36,7 +37,7 @@ class ConversationManager
         }
         return $conversations;
     }
-    
+
     public function getConversationByUsers(User $sessionUser, int $userId): Conversation|null
     {
         $rawDatas = $this->db->executeRequest('SELECT * FROM conversations WHERE (idUser_1 = ? AND idUser_2 = ?) OR (idUser_1 = ? AND idUser_2 = ?)', [$sessionUser->getId(), $userId, $userId, $sessionUser->getId()]);

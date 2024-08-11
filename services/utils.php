@@ -153,11 +153,6 @@ class Utils
         return true;
     }
 
-    public static function secureInput(string $input): string
-    {
-        return htmlspecialchars($input);
-    }
-
     /**
      * // This method format the timestamp to differents readables formats
      * @param string $timestamp

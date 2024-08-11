@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 class Conversation
 {
@@ -76,9 +77,9 @@ class Conversation
     {
         $this->id = $id;
     }
-    
+
     public function secureForDisplay():void{
-        $this->contentLastMessage = htmlspecialchars($this->contentLastMessage,ENT_QUOTES,"UTF-8");
+        $this->contentLastMessage !== null ? htmlspecialchars($this->contentLastMessage,ENT_QUOTES,"UTF-8") : null;
     }
 
 }

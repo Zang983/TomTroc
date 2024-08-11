@@ -36,7 +36,7 @@ class UserController
             throw new Exception("Vous devez spécifier un utilisateur");
         }
         $userManager = new UserManager();
-        $user = $userManager->getUserById($_GET['id']);
+        $user = $userManager->getUserById(intval($_GET['id'],10));
         if ($user === -1) {
             throw new Exception("Cet utilisateur n'existe pas");
         }

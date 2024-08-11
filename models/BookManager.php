@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 class BookManager
 {
@@ -56,7 +57,7 @@ class BookManager
         $datas = array_map(function ($datas) {
             return [
                 'book' => new Book($datas['title'], $datas['description'], $datas['author'], $datas['availability'], $datas['imageFilename'], $datas['ownerId'], $datas['idBook']),
-                'user' => new User($datas['username'], $datas['email'], $datas['password'], $datas['createdAt'], $datas['idUser'])
+                'user' => new User($datas['username'], $datas['email'], $datas['password'], null, $datas['createdAt'], $datas['idUser'])
             ];
         }, $rawDatas);
         return $datas;
@@ -68,7 +69,7 @@ class BookManager
         $datas = array_map(function ($datas) {
             return [
                 'book' => new Book($datas['title'], $datas['description'], $datas['author'], $datas['availability'], $datas['imageFilename'], $datas['ownerId'], $datas['idBook']),
-                'user' => new User($datas['username'], $datas['email'], $datas['password'], $datas['createdAt'], $datas['idUser'])
+                'user' => new User($datas['username'], $datas['email'], $datas['password'],null, $datas['createdAt'], $datas['idUser'])
             ];
         }, $rawDatas);
         return $datas;
@@ -118,7 +119,7 @@ class BookManager
         $datas = array_map(function ($datas) {
             return [
                 'book' => new Book($datas['title'], $datas['description'], $datas['author'], $datas['availability'], $datas['imageFilename'], $datas['ownerId'], $datas['idBook']),
-                'user' => new User($datas['username'], $datas['email'], $datas['password'], $datas['createdAt'], $datas['idUser'])
+                'user' => new User($datas['username'], $datas['email'], $datas['password'],null, $datas['createdAt'], $datas['idUser'])
             ];
         }, $rawDatas);
         return $datas;
