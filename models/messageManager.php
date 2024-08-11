@@ -13,6 +13,7 @@ class MessageManager
     {
         $this->db->executeRequest('INSERT INTO messages (content, createdAt, conversationId, authorId) VALUES (?, ?, ?, ?)', [$message->getContent(), $message->getCreatedAt(), $message->getIdConversation(), $message->getAuthorId()]);
     }
+    
     public function getMessagesByConversationId(Conversation $conversation): array
     {
         $messages = [];

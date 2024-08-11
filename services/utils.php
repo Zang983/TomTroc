@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This class contain some useful methods for the project
  */
@@ -13,6 +15,7 @@ class Utils
             mkdir(UPLOAD_BOOK_DIR, 0777, true);
         }
     }
+
     /**
      * This method upload a file to the server
      * @param array $file
@@ -32,6 +35,7 @@ class Utils
         }
         return null;
     }
+
     /**
      * // This method delete a file from the server
      * @param string|null $filename
@@ -48,10 +52,12 @@ class Utils
             unlink($target_dir . $filename);
         }
     }
+
     public static function redirect(string $url): void
     {
         header("Location: index.php?action=" . $url);
     }
+
     /**
      * @param string $timestamp : timestamp of the registration from the database
      * @return string : duration of the registration
@@ -84,6 +90,7 @@ class Utils
             return $years . " année(s)";
         }
     }
+
     /**
      * @param string|null $filename : filename of avatar or book cover
      * @param bool $isAvatar : if it's an avatar
@@ -98,6 +105,7 @@ class Utils
 
         return $filename == "no-image.svg" ? NO_IMAGE : "./uploads/books/" . $filename;
     }
+
     /**
      * // This method check if the input is valid, we can add more types or conditions
      * @param array $input
@@ -130,6 +138,7 @@ class Utils
         }
         return true;
     }
+
     /**
      * This method check if the form is valid.
      * @param array $inputs : form, with values and types of each inputs (email | password | username | text).
@@ -143,10 +152,12 @@ class Utils
         }
         return true;
     }
+
     public static function secureInput(string $input): string
     {
         return htmlspecialchars($input);
     }
+
     /**
      * // This method format the timestamp to differents readables formats
      * @param string $timestamp
@@ -170,6 +181,7 @@ class Utils
         // Check if the date is before today
         return $date->format('d.m');
     }
+    
     public static function truncate(string $text, int $length = 20): string
     {
         if (strlen($text) > $length)

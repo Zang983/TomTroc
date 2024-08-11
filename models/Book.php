@@ -80,6 +80,7 @@ class Book
     {
         $this->id = $id;
     }
+    
     public function secureForDisplay():void{
         $this->filename = htmlspecialchars($this->filename, ENT_QUOTES,"UTF-8");
         $this->title = htmlspecialchars($this->title, ENT_QUOTES,"UTF-8");

@@ -76,6 +76,7 @@ class Conversation
     {
         $this->id = $id;
     }
+    
     public function secureForDisplay():void{
         $this->contentLastMessage = htmlspecialchars($this->contentLastMessage,ENT_QUOTES,"UTF-8");
     }

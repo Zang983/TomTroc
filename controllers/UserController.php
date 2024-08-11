@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 class UserController
 {
@@ -8,11 +9,13 @@ class UserController
         $view = new View("Inscription");
         $view->render("logForm");
     }
+
     public function connexion(): void
     {
         $view = new View("Connexion");
         $view->render("logForm");
     }
+
     public function userProfile(): void
     {
         $bookManager = new BookManager();
@@ -26,6 +29,7 @@ class UserController
         $view = new View("Modification de votre profil");
         $view->render("userProfile", ['user' => $user, 'library' => $library]);
     }
+
     public function showPublicProfile(): void
     {
         if (!isset($_GET['id'])) {
@@ -47,7 +51,6 @@ class UserController
         $view->render("userProfile", ['user' => $user, 'library' => $library]);
     }
 
-
     /* form processing methods each methods perform basic checks before modify database. */
     public function createUser(): void
     {
@@ -64,6 +67,7 @@ class UserController
         $_SESSION['user'] = $userManager->createUser($_POST['username'], $_POST['email'], password_hash($_POST['password'], PASSWORD_DEFAULT));
         Utils::redirect("home");
     }
+
     public function updateUser(): void
     {
         $userManager = new UserManager();
@@ -99,6 +103,7 @@ class UserController
         }
         Utils::redirect("myProfile");
     }
+
     public function connectUser(): void
     {
         $userManager = new UserManager();
@@ -110,6 +115,7 @@ class UserController
             throw new Exception("Mauvais identifiants");
         }
     }
+    
     public function logout(): void
     {
         unset($_SESSION['user']);

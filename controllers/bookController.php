@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 class BookController
 {
 
@@ -16,11 +16,13 @@ class BookController
         $view = new View("Accueil");
         $view->render("home", ["datas" => $datas]);
     }
+    
     public function newBookForm(): void
     {
         $view = new View("Ajouter un livre");
         $view->render("editBook", ["book" => null]);
     }
+
     public function showEditBookForm(): void
     {
         if (!isset($_GET['id'])) {
@@ -38,6 +40,7 @@ class BookController
         $view = new View("Editer un livre");
         $view->render("editBook", ["book" => $book]);
     }
+
     public function showMarket(): void
     {
         $bookManager = new BookManager();
@@ -51,6 +54,7 @@ class BookController
         $view = new View($title);
         $view->render("market", ["datas" => $datas]);
     }
+
     public function detailBook(): void
     {
         $bookManager = new BookManager();
@@ -104,6 +108,7 @@ class BookController
         }
         Utils::redirect("myProfile");
     }
+
     public function createBook(): void
     {
         $filename = null;
@@ -128,6 +133,7 @@ class BookController
 
         Utils::redirect("myProfile");
     }
+
     public function deleteBook(): void
     {
         $bookManager = new BookManager();

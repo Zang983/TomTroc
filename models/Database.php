@@ -43,10 +43,12 @@ class Database
         }
         return $state->fetchAll();
     }
+
     public function lastId()
     {
         return $this->pdo->lastInsertId();
     }
+    
     public function showError()
     {
         return $this->pdo->errorInfo();

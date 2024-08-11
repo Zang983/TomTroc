@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 class UserManager
 {
     private $db;
@@ -19,6 +19,7 @@ class UserManager
         $idUser = $this->db->lastId();
         return $this->getUserById($idUser);
     }
+
     public function updateUser(User $user): void
     {
         $this->db->executeRequest("UPDATE users SET username = ?, email = ?, password = ?, avatarFilename = ? WHERE idUser = ?", [
@@ -29,10 +30,12 @@ class UserManager
             $user->getId()
         ]);
     }
+
     public function deleteUser(User $user): void
     {
         $this->db->executeRequest("DELETE FROM users WHERE idUser = ?", [$user->getId()]);
     }
+
     /* Methods which read datas */
     public function getUserByEmail(string $email): ?User
     {
@@ -43,6 +46,7 @@ class UserManager
         }
         return null;
     }
+    
     public function getUserById(int $id): User|null
     {
         $user = $this->db->executeRequest("SELECT * FROM users WHERE idUser = ?", [$id])[0] ?? null;

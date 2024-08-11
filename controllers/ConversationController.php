@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 class ConversationController
 {
@@ -12,6 +13,7 @@ class ConversationController
         $conversationsList = $conversationManager->getAllConversations($_SESSION['user']);
         return $conversationsList;
     }
+
     private function getConversationById(int $id): ?Conversation
     {
         $conversationManager = new ConversationManager();
@@ -20,6 +22,7 @@ class ConversationController
             throw new Exception("La conversation n'existe pas.");
         return $conversationManager->getConversationById($id, $_SESSION['user']);
     }
+
     private function getMessagesByConversation(Conversation $conversation): array
     {
         if ($conversation->getId() === -1)
@@ -28,20 +31,24 @@ class ConversationController
         return $messageManager->getMessagesByConversationId($conversation);
 
     }
+
     private function getConversationByReceiver(int $idReceiver)
     {
         $conversationManager = new ConversationManager();
         return $conversationManager->getConversationByUsers($_SESSION['user'], $idReceiver);
     }
+
     private function createTempConversation($idUser1, $idUser2)
     {
         return new Conversation($idUser1, $idUser2, '', date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), -1);
     }
+
     private function saveConversation(Conversation $conversation)
     {
         $conversationManager = new ConversationManager();
         $conversationManager->updateConversation($conversation);
     }
+
     private function changeLastOpeningUser(Conversation $conversation)
     {
         if ($conversation->getIdUser1() === $_SESSION['user']->getId())
@@ -49,6 +56,7 @@ class ConversationController
         else
             $conversation->setLastOpeningUser2(date('Y-m-d H:i:s'));
     }
+
     private function createNewConversation($idReceiver, $contentMessage): Conversation
     {
         $conversationManager = new ConversationManager();
@@ -62,11 +70,13 @@ class ConversationController
         );
         return $conversationManager->createConversation($conversation);
     }
+
     private function createNewMessage($conversation, $contentMessage): Message
     {
         $idUser = $_SESSION['user']->getId();
         return new Message($contentMessage, date('Y-m-d H:i:s'), $idUser, $conversation->getId());
     }
+
     private function checkReceiverExistence($idReceiver): void
     {
         $userManager = new UserManager();
@@ -117,6 +127,7 @@ class ConversationController
         $view = new View('Votre messagerie');
         $view->render('mailBox', ['conversationsList' => $conversationList, 'messages' => $messages, 'messageReceiver' => $messageReceiver]);
     }
+
     /**
      * This method is used to send a message. We can send a message from different pages, so we need to check if the message is empty, if the receiver exists, if the conversation exists, and if not, we create a new one.
      * @return void
@@ -152,6 +163,7 @@ class ConversationController
         else
             Utils::redirect('mailbox&conversationId=' . $conversation->getId());
     }
+    
     public function countUnreadMessage()
     {
         $conversationManager = new ConversationManager();

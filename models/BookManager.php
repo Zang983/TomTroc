@@ -24,11 +24,13 @@ class BookManager
             ]
         );
     }
+
     public function deleteBookById(int $idBook, int $idUser): array
     {
 
         return $this->db->executeRequest('DELETE FROM books WHERE idBook = ? AND ownerId = ?', [$idBook, $idUser]);
     }
+
     public function updateBook(Book $book): void
     {
         $this->db->executeRequest(
@@ -47,7 +49,6 @@ class BookManager
 
     }
 
-
     /* Method which read db*/
     function getLastBooks(int $limit = 4): array
     {
@@ -60,6 +61,7 @@ class BookManager
         }, $rawDatas);
         return $datas;
     }
+
     function getAllBooks(): array
     {
         $rawDatas = $this->db->executeRequest('SELECT * FROM books INNER JOIN users ON books.OwnerId = users.idUser');
@@ -71,6 +73,7 @@ class BookManager
         }, $rawDatas);
         return $datas;
     }
+
     function getBookById(int $id, bool $includeOwner = false): array|Book|null
     {
         if ($includeOwner) {
@@ -89,6 +92,7 @@ class BookManager
         }
         return new Book($rawDatas[0]['title'], $rawDatas[0]['description'], $rawDatas[0]['author'], $rawDatas[0]['availability'], $rawDatas[0]['imageFilename'], $rawDatas[0]['ownerId'], $rawDatas[0]['idBook']);
     }
+
     /**
      * // This method get all books from a user
      * @param int $userId
@@ -119,6 +123,5 @@ class BookManager
         }, $rawDatas);
         return $datas;
     }
-
 
 }

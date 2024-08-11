@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 class User {
 
@@ -8,6 +9,7 @@ class User {
             $this->avatar = "no-image.svg";
         }
     }
+
     public function getUsername(): string
     {
         return $this->username;
@@ -42,15 +44,19 @@ class User {
     {
         return $this->id;
     }
+
     public function getAvatar():string|null{
         return $this->avatar;
     }
+
     public function setAvatar(string $filename):void{
         $this->avatar = $filename;
     }
+
     public function getCreatedAt():string{
         return $this->createdAt;
     }
+    
     public function secureForDisplay():void{
         //User is in session storage, so we need to secure it only once. V1 use htmlspecialchars_decode to avoid double encoding
         $this->username = htmlspecialchars(htmlspecialchars_decode($this->username, ENT_QUOTES), ENT_QUOTES,"UTF-8");

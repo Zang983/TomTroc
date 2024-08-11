@@ -5,6 +5,7 @@ class Message
     public function __construct(public string $content,public string $createdAt,public int $authorId,public int $idConversation = -1,public int $idMessage = -1)
     {
     }
+
     public function getContent(): string
     {
         return $this->content;
@@ -44,7 +45,9 @@ class Message
     {
         $this->idConversation = $idConversation;
     }
-    public function secureForDisplay():void{
+
+    public function secureForDisplay():void
+    {
         $this->content = htmlspecialchars($this->content, ENT_QUOTES,"UTF-8");
     }
 
