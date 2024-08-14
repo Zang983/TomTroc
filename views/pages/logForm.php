@@ -1,6 +1,6 @@
 <section class="connexion">
     <form method="POST"
-        action='index.php?action=<?= $_GET["action"] === "inscription" ? "createUser" : "connectUser" ?>'>
+          action='index.php?action=<?= $_GET["action"] === "inscription" ? "createUser" : "connectUser" ?>'>
         <h1 class="playfair-font">
             <?= $_GET["action"] === "inscription" ? "Inscription" : "Connexion" ?>
         </h1>
@@ -22,8 +22,9 @@
             <input type="password" name="password">
         </label>
         <button type="submit"
-            class="primary_button primary_button--full_width font-semibold"><?= $_GET["action"] === "inscription" ? "S'inscrire" : "Se connecter" ?></button>
-        <?php if ($_GET["action"] === "inscription") { ?>
+                class="primary_button primary_button--full_width font-semibold"><?= $_GET["action"] === "inscription" ? "S'inscrire" : "Se connecter" ?></button>
+        <?php
+        if ($_GET["action"] === "inscription") { ?>
             <p>Pas de compte ? <a href="index.php?action=connexion" class="underline">Connectez-vous</a></p>
             <?php
         } else { ?>

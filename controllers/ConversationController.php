@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 class ConversationController
@@ -18,18 +19,19 @@ class ConversationController
     {
         $conversationManager = new ConversationManager();
         $conversation = $conversationManager->getConversationById($id, $_SESSION['user']);
-        if (!$conversation)
+        if (!$conversation) {
             throw new Exception("La conversation n'existe pas.");
+        }
         return $conversationManager->getConversationById($id, $_SESSION['user']);
     }
 
     private function getMessagesByConversation(Conversation $conversation): array
     {
-        if ($conversation->getId() === -1)
+        if ($conversation->getId() === -1) {
             return [];
+        }
         $messageManager = new MessageManager();
         return $messageManager->getMessagesByConversationId($conversation);
-
     }
 
     private function getConversationByReceiver(int $idReceiver)
@@ -40,7 +42,15 @@ class ConversationController
 
     private function createTempConversation($idUser1, $idUser2): Conversation
     {
-        return new Conversation($idUser1, $idUser2, '', date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), -1);
+        return new Conversation(
+            $idUser1,
+            $idUser2,
+            '',
+            date('Y-m-d H:i:s'),
+            date('Y-m-d H:i:s'),
+            date('Y-m-d H:i:s'),
+            -1
+        );
     }
 
     private function saveConversation(Conversation $conversation): void
@@ -51,10 +61,11 @@ class ConversationController
 
     private function changeLastOpeningUser(Conversation $conversation): void
     {
-        if ($conversation->getIdUser1() === $_SESSION['user']->getId())
+        if ($conversation->getIdUser1() === $_SESSION['user']->getId()) {
             $conversation->setLastOpeningUser1(date('Y-m-d H:i:s'));
-        else
+        } else {
             $conversation->setLastOpeningUser2(date('Y-m-d H:i:s'));
+        }
     }
 
     private function createNewConversation($idReceiver, $contentMessage): Conversation
@@ -81,13 +92,15 @@ class ConversationController
     {
         $userManager = new UserManager();
         $result = $userManager->getUserById($idReceiver);
-        if (!$result)
+        if (!$result) {
             Utils::redirect('mailbox');
+        }
     }
 
     /**
      * This method is used to display the mailbox page.
-     * It retrieves all the conversations of the user, the messages of the selected conversation, and the user with whom the user is talking. And if conversation doesn't exist, it creates a new temporary one.
+     * It retrieves all the conversations of the user, the messages of the selected conversation, and the user with
+     * whom the user is talking. And if conversation doesn't exist, it creates a new temporary one.
      * @return void
      */
     public function showMailBox(): void
@@ -101,14 +114,19 @@ class ConversationController
         if (isset($_GET['conversationId'])) {
             $conversationId = intval($_GET['conversationId'], 10);
             $conversation = $this->getConversationById($conversationId);
-            $messageReceiver = $conversation->getIdUser1() === $userId ? $messageReceiver = $userManager->getUserById($conversation->getIdUser2()) : $messageReceiver = $userManager->getUserById($conversation->getIdUser1());
+            $messageReceiver = $conversation->getIdUser1() === $userId ? $messageReceiver = $userManager->getUserById(
+                $conversation->getIdUser2()
+            ) : $messageReceiver = $userManager->getUserById($conversation->getIdUser1());
         }
         if (isset($_GET['idReceiver'])) {
             $idReceiver = intval($_GET['idReceiver'], 10);
             $conversation = $this->getConversationByReceiver($idReceiver);
             $messageReceiver = $userManager->getUserById($idReceiver);
             if (!$conversation) {
-                $conversationList[] = ["conversation" => $this->createTempConversation($userId, $idReceiver), "receiver" => $userManager->getUserById($idReceiver)];
+                $conversationList[] = [
+                    "conversation" => $this->createTempConversation($userId, $idReceiver),
+                    "receiver" => $userManager->getUserById($idReceiver)
+                ];
             }
         }
         if ($conversation) {
@@ -125,11 +143,15 @@ class ConversationController
             return $message;
         }, $messages);
         $view = new View('Votre messagerie');
-        $view->render('mailBox', ['conversationsList' => $conversationList, 'messages' => $messages, 'messageReceiver' => $messageReceiver]);
+        $view->render(
+            'mailBox',
+            ['conversationsList' => $conversationList, 'messages' => $messages, 'messageReceiver' => $messageReceiver]
+        );
     }
 
     /**
-     * This method is used to send a message. We can send a message from different pages, so we need to check if the message is empty, if the receiver exists, if the conversation exists, and if not, we create a new one.
+     * This method is used to send a message. We can send a message from different pages, so we need to check if the
+     * message is empty, if the receiver exists, if the conversation exists, and if not, we create a new one.
      * @return void
      */
     public function sendMessage(): void
@@ -138,8 +160,9 @@ class ConversationController
         $idReceiver = isset($_GET['idReceiver']) ? intval($_GET['idReceiver'], 10) : null;
         $this->checkReceiverExistence($idReceiver);
 
-        if (!$idReceiver || !$messageContent || empty($messageContent))
+        if (!$idReceiver || !$messageContent || empty($messageContent)) {
             Utils::redirect('mailbox&conversationId=' . $_GET['conversationId']);
+        }
 
         $conversation = $this->getConversationByReceiver($idReceiver);
         if (!$conversation) {
@@ -153,10 +176,11 @@ class ConversationController
         $messageManager = new MessageManager();
         $message = $this->createNewMessage($conversation, $messageContent);
         $messageManager->addMessage($message);
-        if (isset($_GET['ajax']))
+        if (isset($_GET['ajax'])) {
             echo 'success';
-        else
+        } else {
             Utils::redirect('mailbox&conversationId=' . $conversation->getId());
+        }
     }
 
     public function countUnreadMessage()

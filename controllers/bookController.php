@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 class BookController
@@ -93,20 +94,36 @@ class BookController
         $filename = $actualDatas->getFilename();
 
         if (
-            !Utils::checkValidityForm([['value' => $newTitle, 'type' => "text"], ['value' => $newDescription, 'type' => 'text'], ['value' => $newAuthor, 'type' => 'text']])
+            !Utils::checkValidityForm(
+                [
+                    ['value' => $newTitle, 'type' => "text"],
+                    ['value' => $newDescription, 'type' => 'text'],
+                    ['value' => $newAuthor, 'type' => 'text']
+                ]
+            )
             || ($newAvailability !== 1 && $newAvailability !== 0)
         ) {
             /* No detail about form mistakes, it will be improve in a next version.*/
             throw new Exception("Le formulaire n'est pas valide.");
         }
         /* We check if datas are the same, or if we need to update database. */
-        if ($newTitle !== $actualDatas->getTitle() || $newDescription !== $actualDatas->getDescription() || $newAuthor !== $actualDatas->getAuthor() || $newAvailability !== $actualDatas->getAvailability() || !empty($_FILES['file'])) {
+        if ($newTitle !== $actualDatas->getTitle() || $newDescription !== $actualDatas->getDescription(
+            ) || $newAuthor !== $actualDatas->getAuthor() || $newAvailability !== $actualDatas->getAvailability(
+            ) || !empty($_FILES['file'])) {
             if (!empty($_FILES['file']['name'])) {
                 Utils::deleteFile($actualDatas->getFilename());
                 $filename = Utils::uploadFile($_FILES);
             }
 
-            $book = new Book($newTitle, $newDescription, $newAuthor, $newAvailability, $filename, $_SESSION['user']->getId(), $bookId);
+            $book = new Book(
+                $newTitle,
+                $newDescription,
+                $newAuthor,
+                $newAvailability,
+                $filename,
+                $_SESSION['user']->getId(),
+                $bookId
+            );
             $bookManager->updateBook($book);
         }
         Utils::redirect("myProfile");
@@ -120,7 +137,13 @@ class BookController
         $author = $_POST['author'] ?? null;
         $availability = intval($_POST['availability'], 10) ?? null;
         if (
-            !Utils::checkValidityForm([['value' => $title, 'type' => "text"], ['value' => $description, 'type' => 'text'], ['value' => $author, 'type' => 'text']])
+            !Utils::checkValidityForm(
+                [
+                    ['value' => $title, 'type' => "text"],
+                    ['value' => $description, 'type' => 'text'],
+                    ['value' => $author, 'type' => 'text']
+                ]
+            )
             || $availability === null
         ) {
             /* No detail about form mistakes, it will be improve in a next version.*/

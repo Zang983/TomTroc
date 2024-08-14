@@ -9,12 +9,15 @@
                 ?>
                 <a href="index.php?action=mailbox&conversationId=<?= $conversation->getId() ?>">
                     <figure
-                        class="chatlist--item <?= (isset($_GET["conversationId"]) && $conversation->getId() == $_GET["conversationId"]) ? "active" : null ?>">
+                            class="chatlist--item <?= (isset($_GET["conversationId"]) && $conversation->getId(
+                                ) == $_GET["conversationId"]) ? "active" : null ?>">
                         <img src=<?= Utils::filepath($receiver->getAvatar(), true) ?> alt="avatar">
                         <figcaption>
                             <h4>
                                 <?= $receiver->getUsername() ?>
-                                <span><?= $conversation->getId() !== -1 ? Utils::formatTimestamp($conversation->getTimestampLastMessage()) : null ?></span>
+                                <span><?= $conversation->getId() !== -1 ? Utils::formatTimestamp(
+                                        $conversation->getTimestampLastMessage()
+                                    ) : null ?></span>
                             </h4>
                             <p><?= $conversation->getContentLastMessage() ?></p>
                         </figcaption>
@@ -26,7 +29,8 @@
         ?>
     </section>
     <div id="chat">
-        <?php if (!empty($messages) || $messageReceiver) { ?>
+        <?php
+        if (!empty($messages) || $messageReceiver) { ?>
             <h3 class="font-semibold">
                 <img src=<?= Utils::filepath($messageReceiver->getAvatar(), true) ?> alt="avatar">
                 <?= $messageReceiver->getUsername() ?>
@@ -35,13 +39,14 @@
             foreach ($messages as $message) {
                 ?>
                 <div
-                    class="message <?= $message->getAuthorId() == $_SESSION['user']->getId() ? "own_message" : "received_message" ?>">
+                        class="message <?= $message->getAuthorId() == $_SESSION['user']->getId(
+                        ) ? "own_message" : "received_message" ?>">
                     <h5>
                         <?= $message->getAuthorId() != $_SESSION['user']->getId() ?
                             '<img src=' . Utils::filepath($messageReceiver->getAvatar(), true) . ' alt="avatar">'
                             :
                             null ?>
-                        <?= Utils::formatTimestamp($message->getCreatedAt(),true) ?>
+                        <?= Utils::formatTimestamp($message->getCreatedAt(), true) ?>
                     </h5>
                     <p><?= $message->getContent() ?></p>
                 </div>
@@ -51,7 +56,8 @@
             <form action="index.php?action=sendMessage&idReceiver=<?= $messageReceiver->getId() ?>" method="post">
                 <input placeholder="Tapez votre message ici" type="text" name="message" id="message">
                 <button type="submit" data-idReceiver="<?= $messageReceiver->getId() ?>"
-                    class="primary_button font-semibold">Envoyer</button>
+                        class="primary_button font-semibold">Envoyer
+                </button>
             </form>
             <?php
         } else {

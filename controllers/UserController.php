@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 class UserController
@@ -36,7 +37,7 @@ class UserController
             throw new Exception("Vous devez spécifier un utilisateur");
         }
         $userManager = new UserManager();
-        $user = $userManager->getUserById(intval($_GET['id'],10));
+        $user = $userManager->getUserById(intval($_GET['id'], 10));
         if ($user === -1) {
             throw new Exception("Cet utilisateur n'existe pas");
         }
@@ -60,11 +61,16 @@ class UserController
                 ['value' => $_POST['email'], 'type' => 'text'],
                 ['value' => $_POST['password'], 'type' => 'text']
             ])
-        )
+        ) {
             throw new Exception("Tous les champs ne sont pas remplis comme il faut.");
+        }
 
         $userManager = new UserManager();
-        $_SESSION['user'] = $userManager->createUser($_POST['username'], $_POST['email'], password_hash($_POST['password'], PASSWORD_DEFAULT));
+        $_SESSION['user'] = $userManager->createUser(
+            $_POST['username'],
+            $_POST['email'],
+            password_hash($_POST['password'], PASSWORD_DEFAULT)
+        );
         Utils::redirect("home");
     }
 
@@ -77,7 +83,8 @@ class UserController
         $newPassword = $_POST['password'] ?? null;
 
         $haveNewData = false;
-        if (Utils::checkInput(['value' => $newUsername, 'type' => 'username']) && $newUsername !== $user->getUsername()) {
+        if (Utils::checkInput(['value' => $newUsername, 'type' => 'username']) && $newUsername !== $user->getUsername(
+            )) {
             $haveNewData = true;
             $user->setUsername($_POST['username']);
         }
@@ -115,7 +122,7 @@ class UserController
             throw new Exception("Mauvais identifiants");
         }
     }
-    
+
     public function logout(): void
     {
         unset($_SESSION['user']);

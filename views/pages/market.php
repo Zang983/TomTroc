@@ -16,7 +16,10 @@
             ?>
             <a href="index.php?action=detailBook&idBook=<?= $book->getId() ?>" class="book_card">
                 <figure>
-                    <img src=<?= $book ? Utils::filepath($book->getFilename()) : null ?> alt="<?= ($book && $book->getFilename()) ? 'Couverture du livre' : '' ?>" width="200" height="200">
+                    <img src=<?= $book ? Utils::filepath(
+                        $book->getFilename()
+                    ) : null ?> alt="<?= ($book && $book->getFilename()) ? 'Couverture du livre' : '' ?>" width="200"
+                         height="200">
                     <figcaption>
                         <h3><?= $book->getTitle() ?></h3>
                         <h4><?= $book->getAuthor() ?></h4>

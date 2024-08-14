@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 class BookManager
@@ -28,7 +29,6 @@ class BookManager
 
     public function deleteBookById(int $idBook, int $idUser): array
     {
-
         return $this->db->executeRequest('DELETE FROM books WHERE idBook = ? AND ownerId = ?', [$idBook, $idUser]);
     }
 
@@ -47,17 +47,33 @@ class BookManager
                 $book->getOwnerId()
             ]
         );
-
     }
 
     /* Method which read db*/
     function getLastBooks(int $limit = 4): array
     {
-        $rawDatas = $this->db->executeRequest('SELECT * FROM books INNER JOIN users ON  books.OwnerId = users.idUser ORDER BY books.createdAt DESC LIMIT ' . $limit);
+        $rawDatas = $this->db->executeRequest(
+            'SELECT * FROM books INNER JOIN users ON  books.OwnerId = users.idUser ORDER BY books.createdAt DESC LIMIT ' . $limit
+        );
         $datas = array_map(function ($datas) {
             return [
-                'book' => new Book($datas['title'], $datas['description'], $datas['author'], $datas['availability'], $datas['imageFilename'], $datas['ownerId'], $datas['idBook']),
-                'user' => new User($datas['username'], $datas['email'], $datas['password'], null, $datas['createdAt'], $datas['idUser'])
+                'book' => new Book(
+                    $datas['title'],
+                    $datas['description'],
+                    $datas['author'],
+                    $datas['availability'],
+                    $datas['imageFilename'],
+                    $datas['ownerId'],
+                    $datas['idBook']
+                ),
+                'user' => new User(
+                    $datas['username'],
+                    $datas['email'],
+                    $datas['password'],
+                    null,
+                    $datas['createdAt'],
+                    $datas['idUser']
+                )
             ];
         }, $rawDatas);
         return $datas;
@@ -68,8 +84,23 @@ class BookManager
         $rawDatas = $this->db->executeRequest('SELECT * FROM books INNER JOIN users ON books.OwnerId = users.idUser');
         $datas = array_map(function ($datas) {
             return [
-                'book' => new Book($datas['title'], $datas['description'], $datas['author'], $datas['availability'], $datas['imageFilename'], $datas['ownerId'], $datas['idBook']),
-                'user' => new User($datas['username'], $datas['email'], $datas['password'],null, $datas['createdAt'], $datas['idUser'])
+                'book' => new Book(
+                    $datas['title'],
+                    $datas['description'],
+                    $datas['author'],
+                    $datas['availability'],
+                    $datas['imageFilename'],
+                    $datas['ownerId'],
+                    $datas['idBook']
+                ),
+                'user' => new User(
+                    $datas['username'],
+                    $datas['email'],
+                    $datas['password'],
+                    null,
+                    $datas['createdAt'],
+                    $datas['idUser']
+                )
             ];
         }, $rawDatas);
         return $datas;
@@ -78,48 +109,104 @@ class BookManager
     function getBookById(int $id, bool $includeOwner = false): array|Book|null
     {
         if ($includeOwner) {
-            $rawDatas = $this->db->executeRequest('SELECT * FROM books INNER JOIN users ON books.OwnerId = users.idUser WHERE idBook = ?', [$id]);
+            $rawDatas = $this->db->executeRequest(
+                'SELECT * FROM books INNER JOIN users ON books.OwnerId = users.idUser WHERE idBook = ?',
+                [$id]
+            );
             if (!$rawDatas) {
                 return null;
             }
             return [
-                'book' => new Book($rawDatas[0]['title'], $rawDatas[0]['description'], $rawDatas[0]['author'], $rawDatas[0]['availability'], $rawDatas[0]['imageFilename'], $rawDatas[0]['ownerId'], $rawDatas[0]['idBook']),
-                'user' => new User($rawDatas[0]['username'], $rawDatas[0]['email'], $rawDatas[0]['password'], $rawDatas[0]['avatarFilename'], $rawDatas[0]['createdAt'], $rawDatas[0]['idUser'])
+                'book' => new Book(
+                    $rawDatas[0]['title'],
+                    $rawDatas[0]['description'],
+                    $rawDatas[0]['author'],
+                    $rawDatas[0]['availability'],
+                    $rawDatas[0]['imageFilename'],
+                    $rawDatas[0]['ownerId'],
+                    $rawDatas[0]['idBook']
+                ),
+                'user' => new User(
+                    $rawDatas[0]['username'],
+                    $rawDatas[0]['email'],
+                    $rawDatas[0]['password'],
+                    $rawDatas[0]['avatarFilename'],
+                    $rawDatas[0]['createdAt'],
+                    $rawDatas[0]['idUser']
+                )
             ];
         }
         $rawDatas = $this->db->executeRequest('SELECT * FROM books WHERE idBook = ?', [$id]);
         if (!$rawDatas) {
             return null;
         }
-        return new Book($rawDatas[0]['title'], $rawDatas[0]['description'], $rawDatas[0]['author'], $rawDatas[0]['availability'], $rawDatas[0]['imageFilename'], $rawDatas[0]['ownerId'], $rawDatas[0]['idBook']);
+        return new Book(
+            $rawDatas[0]['title'],
+            $rawDatas[0]['description'],
+            $rawDatas[0]['author'],
+            $rawDatas[0]['availability'],
+            $rawDatas[0]['imageFilename'],
+            $rawDatas[0]['ownerId'],
+            $rawDatas[0]['idBook']
+        );
     }
 
     /**
      * // This method get all books from a user
+     *
      * @param int $userId
+     *
      * @return array with books datas
      */
     public function getBooksByUser(int $userId): array
     {
         $rawBooks = $this->db->executeRequest('SELECT * FROM books WHERE OwnerId = ' . $userId);
         $books = array_map(function ($book) {
-            return new Book($book['title'], $book['description'], $book['author'], $book['availability'], $book['imageFilename'], $book['ownerId'], $book['idBook']);
+            return new Book(
+                $book['title'],
+                $book['description'],
+                $book['author'],
+                $book['availability'],
+                $book['imageFilename'],
+                $book['ownerId'],
+                $book['idBook']
+            );
         }, $rawBooks);
         return $books;
     }
 
     /**
      * // This method search books approximately by title or author
+     *
      * @param string $search
+     *
      * @return array with books datas and their owners datas
      */
     public function searchBooks(string $search): array
     {
-        $rawDatas = $this->db->executeRequest('SELECT * FROM books INNER JOIN users WHERE books.ownerId = users.idUser AND( title  LIKE ? OR author LIKE ?)', ['%' . $search . '%', '%' . $search . '%']);
+        $rawDatas = $this->db->executeRequest(
+            'SELECT * FROM books INNER JOIN users WHERE books.ownerId = users.idUser AND( title  LIKE ? OR author LIKE ?)',
+            ['%' . $search . '%', '%' . $search . '%']
+        );
         $datas = array_map(function ($datas) {
             return [
-                'book' => new Book($datas['title'], $datas['description'], $datas['author'], $datas['availability'], $datas['imageFilename'], $datas['ownerId'], $datas['idBook']),
-                'user' => new User($datas['username'], $datas['email'], $datas['password'],null, $datas['createdAt'], $datas['idUser'])
+                'book' => new Book(
+                    $datas['title'],
+                    $datas['description'],
+                    $datas['author'],
+                    $datas['availability'],
+                    $datas['imageFilename'],
+                    $datas['ownerId'],
+                    $datas['idBook']
+                ),
+                'user' => new User(
+                    $datas['username'],
+                    $datas['email'],
+                    $datas['password'],
+                    null,
+                    $datas['createdAt'],
+                    $datas['idUser']
+                )
             ];
         }, $rawDatas);
         return $datas;

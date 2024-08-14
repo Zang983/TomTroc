@@ -1,12 +1,21 @@
 <?php
+
 declare(strict_types=1);
 
 class Conversation
 {
 
-    function __construct(private int $idUser1, private int $idUser2, private string $contentLastMessage, private string|null $timestampLastMessage, private string|null $lastOpeningUser1, private string|null $lastOpeningUser2, private int $id = -1)
-    {
+    function __construct(
+        private int $idUser1,
+        private int $idUser2,
+        private string $contentLastMessage,
+        private string|null $timestampLastMessage,
+        private string|null $lastOpeningUser1,
+        private string|null $lastOpeningUser2,
+        private int $id = -1
+    ) {
     }
+
     public function getIdUser1(): int
     {
         return $this->idUser1;
@@ -77,8 +86,9 @@ class Conversation
         $this->id = $id;
     }
 
-    public function secureForDisplay():void{
-        $this->contentLastMessage !== null ? htmlspecialchars($this->contentLastMessage,ENT_QUOTES,"UTF-8") : null;
+    public function secureForDisplay(): void
+    {
+        $this->contentLastMessage !== null ? htmlspecialchars($this->contentLastMessage, ENT_QUOTES, "UTF-8") : null;
     }
 
 }

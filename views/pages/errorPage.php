@@ -1,1 +1,1 @@
-<h1 class="error_page">ERREUR : <?=$errorMessage?></h1>
+<h1 class="error_page">ERREUR : <?= $errorMessage ?></h1>
