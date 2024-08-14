@@ -2,7 +2,7 @@
 declare(strict_types=1);
 class Book
 {
-    public function __construct(private string $title, private string $description, private string $author, private int $availability = 1, private string|null $filename, private int $ownerId = -1, private int $id = -1)
+    public function __construct(private string $title, private string $description, private string $author, private int $availability, private string|null $filename, private int $ownerId = -1, private int $id = -1)
     {
     }
 

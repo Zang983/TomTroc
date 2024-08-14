@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 class MessageManager
 {
-    private $db;
+    private Database $db;
 
     public function __construct()
     {
         $this->db = Database::getDB();
     }
 
-    public function addMessage(Message $message)
+    public function addMessage(Message $message): void
     {
         $this->db->executeRequest('INSERT INTO messages (content, createdAt, conversationId, authorId) VALUES (?, ?, ?, ?)', [$message->getContent(), $message->getCreatedAt(), $message->getIdConversation(), $message->getAuthorId()]);
     }

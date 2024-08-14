@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 class Conversation
 {
-    private $usernameReceiver;
-    private $avatarReceiver;
+
     function __construct(private int $idUser1, private int $idUser2, private string $contentLastMessage, private string|null $timestampLastMessage, private string|null $lastOpeningUser1, private string|null $lastOpeningUser2, private int $id = -1)
     {
     }

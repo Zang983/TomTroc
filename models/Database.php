@@ -7,8 +7,8 @@ Simple creation of the database connection; studying the singleton pattern is re
 
 class Database
 {
-    private static $instance = null;
-    private $pdo;
+    private static Database|null $instance = null;
+    private PDO $pdo;
 
     private function __construct()
     {
@@ -19,7 +19,7 @@ class Database
         }
     }
 
-    public static function getDB()
+    public static function getDB(): Database
     {
         if (is_null(self::$instance)) {
             self::$instance = new DataBase();
@@ -27,7 +27,7 @@ class Database
         return self::$instance;
     }
 
-    public function getPdo()
+    public function getPdo(): PDO
     {
         return $this->pdo;
     }
@@ -35,7 +35,7 @@ class Database
     /*
     Execute the provided query and return the result if there is one.
     */
-    public function executeRequest(string $request, array $params = null)
+    public function executeRequest(string $request, array $params = null): array
     {
         if ($params == null) {
             $state = $this->pdo->query($request);
@@ -46,12 +46,12 @@ class Database
         return $state->fetchAll();
     }
 
-    public function lastId()
+    public function lastId(): string
     {
         return $this->pdo->lastInsertId();
     }
 
-    public function showError()
+    public function showError(): array
     {
         return $this->pdo->errorInfo();
     }

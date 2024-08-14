@@ -5,7 +5,7 @@ class ConversationController
 {
     /*
     Private methods are used to retrieve data from the database, create new objects, and update the database to simplify the code and make it more readable.
-    */ 
+    */
 
     private function getAllUserConversations(): array
     {
@@ -38,18 +38,18 @@ class ConversationController
         return $conversationManager->getConversationByUsers($_SESSION['user'], $idReceiver);
     }
 
-    private function createTempConversation($idUser1, $idUser2)
+    private function createTempConversation($idUser1, $idUser2): Conversation
     {
         return new Conversation($idUser1, $idUser2, '', date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), -1);
     }
 
-    private function saveConversation(Conversation $conversation)
+    private function saveConversation(Conversation $conversation): void
     {
         $conversationManager = new ConversationManager();
         $conversationManager->updateConversation($conversation);
     }
 
-    private function changeLastOpeningUser(Conversation $conversation)
+    private function changeLastOpeningUser(Conversation $conversation): void
     {
         if ($conversation->getIdUser1() === $_SESSION['user']->getId())
             $conversation->setLastOpeningUser1(date('Y-m-d H:i:s'));
@@ -90,7 +90,7 @@ class ConversationController
      * It retrieves all the conversations of the user, the messages of the selected conversation, and the user with whom the user is talking. And if conversation doesn't exist, it creates a new temporary one.
      * @return void
      */
-    public function showMailBox()
+    public function showMailBox(): void
     {
         $userId = $_SESSION['user']->getId();
         $conversationList = $this->getAllUserConversations();
@@ -132,13 +132,8 @@ class ConversationController
      * This method is used to send a message. We can send a message from different pages, so we need to check if the message is empty, if the receiver exists, if the conversation exists, and if not, we create a new one.
      * @return void
      */
-    public function sendMessage()
+    public function sendMessage(): void
     {
-        /* 
-        On vérifie si le message est vide ou non.
-        On récupère l'id du receveur et on récupère la conversation.
-        Si la conversation n'existe pas on la crée.
-        */
         $messageContent = isset($_POST['message']) ? trim($_POST['message']) : null;
         $idReceiver = isset($_GET['idReceiver']) ? intval($_GET['idReceiver'], 10) : null;
         $this->checkReceiverExistence($idReceiver);
@@ -163,7 +158,7 @@ class ConversationController
         else
             Utils::redirect('mailbox&conversationId=' . $conversation->getId());
     }
-    
+
     public function countUnreadMessage()
     {
         $conversationManager = new ConversationManager();

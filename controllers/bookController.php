@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 class BookController
 {
 
@@ -89,10 +90,11 @@ class BookController
         $newDescription = $_POST['description'];
         $newAuthor = $_POST['author'];
         $newAvailability = intval($_POST['availability'], 10);
+        $filename = $actualDatas->getFilename();
 
         if (
             !Utils::checkValidityForm([['value' => $newTitle, 'type' => "text"], ['value' => $newDescription, 'type' => 'text'], ['value' => $newAuthor, 'type' => 'text']])
-            || $newAvailability === null
+            || ($newAvailability !== 1 && $newAvailability !== 0)
         ) {
             /* No detail about form mistakes, it will be improve in a next version.*/
             throw new Exception("Le formulaire n'est pas valide.");
@@ -103,6 +105,7 @@ class BookController
                 Utils::deleteFile($actualDatas->getFilename());
                 $filename = Utils::uploadFile($_FILES);
             }
+
             $book = new Book($newTitle, $newDescription, $newAuthor, $newAvailability, $filename, $_SESSION['user']->getId(), $bookId);
             $bookManager->updateBook($book);
         }
