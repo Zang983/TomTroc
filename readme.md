@@ -18,10 +18,15 @@ L'adresse mail des utilisateurs est présente en BDD en clair le mot de passe es
 Dans le dossier config, un fichier _config.php est présent.
 Il faut enlever l'underscore présent sur le nom du fichier et indiquer les informations concernant la base de données.
 
-## Bug éventuels : 
+## Bug éventuels :
 
-A priori, l'extension intl n'est pas obligatoire pour l'affichage des différentes dates, toutefois si un problème survient veillez à l'activer dans votre php.ini.
+A priori, l'extension intl n'est pas obligatoire pour l'affichage des différentes dates, toutefois si un problème
+survient veillez à l'activer dans votre php.ini.
+De plus les droits d'écriture sur le dossier uploads sont nécessaires pour l'envoi de fichiers.
+Le script gère la création du dossier s'il n'existe pas toutefois, vous pouvez le faire si besoin en créant un dossier
+uploads à la racine du projet avec dedans un dossier avatar et un books.
 
-### Fonctionnalité JS : 
+### Fonctionnalité JS :
 
-Le site propose un peu de dynamisme (une modale) pour l'envoi d'un message depuis une page autre que la boîte mail, mais JS est désactivable sans perte de fonctionnalités.
+Le site propose un peu de dynamisme (une modale) pour l'envoi d'un message depuis une page autre que la boîte mail, mais
+JS est désactivable sans perte de fonctionnalités.
