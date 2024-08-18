@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+
 
 /**
  * Cette classe génère les vues en fonction de ce que chaque contrôlleur lui passe en paramètre.

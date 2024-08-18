@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+
 
 /*
 Simple creation of the database connection; studying the singleton pattern is relevant.

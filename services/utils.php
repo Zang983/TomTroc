@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+
 
 /**
  * This class contain some useful methods for the project
