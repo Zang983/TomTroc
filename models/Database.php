@@ -1,7 +1,5 @@
 <?php
-
-
-
+declare(strict_types=1);
 /*
 Simple creation of the database connection; studying the singleton pattern is relevant.
 */
@@ -47,9 +45,9 @@ class Database
         return $state->fetchAll();
     }
 
-    public function lastId(): string
+    public function lastId(): int
     {
-        return $this->pdo->lastInsertId();
+        return intval($this->pdo->lastInsertId(),10);
     }
 
     public function showError(): array
